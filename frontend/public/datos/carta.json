@@ -1,0 +1,431 @@
+[
+  {
+    "id": 1,
+    "nombre": "Bocadillos",
+    "nombre_en": "Baguette sandwiches",
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Tortilla francesa con jamón",
+        "nombre_en": "Omelette & ham",
+        "descripcion": "Tortilla francesa, jamón serrano y un toque de aceite de oliva.",
+        "descripcion_en": "French omelette, Serrano ham and a drizzle of olive oil.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      },
+      {
+        "id": 2,
+        "nombre": "Chivito",
+        "nombre_en": "Chivito",
+        "descripcion": "Ternera, lechuga, tomate, jamón, huevo y mayonesa.",
+        "descripcion_en": "Beef, lettuce, tomato, ham, egg and mayonnaise.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      },
+      {
+        "id": 3,
+        "nombre": "Lomo, tomate y queso",
+        "nombre_en": "Pork loin, tomato & cheese",
+        "descripcion": "Lomo de cerdo, tomate natural y queso fundido.",
+        "descripcion_en": "Pork loin, fresh tomato and melted cheese.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      },
+      {
+        "id": 4,
+        "nombre": "Embutidos",
+        "nombre_en": "Cured meats",
+        "descripcion": "Jamón, chorizo, salchichón y queso.",
+        "descripcion_en": "Ham, chorizo, salchichón and cheese.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      },
+      {
+        "id": 5,
+        "nombre": "De la casa",
+        "nombre_en": "House special",
+        "descripcion": "Pollo, tomate, lechuga y queso.",
+        "descripcion_en": "Chicken, tomato, lettuce and cheese.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      },
+      {
+        "id": 6,
+        "nombre": "Pollo, tomate y queso",
+        "nombre_en": "Chicken, tomato & cheese",
+        "descripcion": "Pechuga de pollo, tomate y queso fundido.",
+        "descripcion_en": "Chicken breast, tomato and melted cheese.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      },
+      {
+        "id": 7,
+        "nombre": "Calamar a la rumana con picadillo y mayonesa",
+        "nombre_en": "Fried squid with chopped salad & mayo",
+        "descripcion": "Calamares a la romana, picadillo de tomate, cebolla y mayonesa.",
+        "descripcion_en": "Battered squid rings, chopped tomato and onion, and mayonnaise.",
+        "precio": "7.00",
+        "precio_medio": "6.50",
+        "disponible": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Para picar",
+    "nombre_en": "To share",
+    "productos": [
+      {
+        "id": 8,
+        "nombre": "Pan tostado con tomate",
+        "nombre_en": "Toast with tomato",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "3.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 9,
+        "nombre": "Patatas bravas",
+        "nombre_en": "Patatas bravas",
+        "descripcion": "",
+        "descripcion_en": "Fried potatoes with spicy sauce.",
+        "precio": "6.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 10,
+        "nombre": "Ensaladilla rusa",
+        "nombre_en": "Russian salad",
+        "descripcion": "",
+        "descripcion_en": "Potato salad with tuna and mayonnaise.",
+        "precio": "6.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 11,
+        "nombre": "Tortilla de patata",
+        "nombre_en": "Spanish omelette",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "7.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 12,
+        "nombre": "Torreznos",
+        "nombre_en": "Torreznos",
+        "descripcion": "",
+        "descripcion_en": "Crispy fried pork belly.",
+        "precio": "8.00",
+        "precio_medio": null,
+        "disponible": true
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Pollo y carnes",
+    "nombre_en": "Chicken & meat",
+    "productos": [
+      {
+        "id": 13,
+        "nombre": "Lágrimas de pollo",
+        "nombre_en": "Chicken strips",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "8.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 14,
+        "nombre": "Alitas a la barbacoa",
+        "nombre_en": "BBQ chicken wings",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "9.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 15,
+        "nombre": "Alitas al ajillo",
+        "nombre_en": "Garlic chicken wings",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "9.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 16,
+        "nombre": "Pulled pork",
+        "nombre_en": "Pulled pork",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "9.50",
+        "precio_medio": null,
+        "disponible": true
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Del mar",
+    "nombre_en": "From the sea",
+    "productos": [
+      {
+        "id": 17,
+        "nombre": "Colitas de gamba rebozadas",
+        "nombre_en": "Battered prawn tails",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "9.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 18,
+        "nombre": "Calamar a la romana",
+        "nombre_en": "Fried squid rings",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "9.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 19,
+        "nombre": "Chipirones a la plancha",
+        "nombre_en": "Grilled baby squid",
+        "descripcion": "Tiernos chipirones a la plancha con ajo, perejil y limón.",
+        "descripcion_en": "Tender grilled baby squid with garlic, parsley and lemon.",
+        "precio": "10.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 20,
+        "nombre": "Calamar a la plancha",
+        "nombre_en": "Grilled squid",
+        "descripcion": "Calamar entero a la plancha con ajo, perejil y limón.",
+        "descripcion_en": "Whole grilled squid with garlic, parsley and lemon.",
+        "precio": "12.00",
+        "precio_medio": null,
+        "disponible": true
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "Croquetas",
+    "nombre_en": "Croquettes",
+    "productos": [
+      {
+        "id": 21,
+        "nombre": "Croquetas de jamón",
+        "nombre_en": "Ham croquettes",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "8.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 22,
+        "nombre": "Croquetas de sepia",
+        "nombre_en": "Cuttlefish croquettes",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "8.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 23,
+        "nombre": "Croquetas de gambón rojo",
+        "nombre_en": "Red prawn croquettes",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "10.50",
+        "precio_medio": null,
+        "disponible": true
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "Cafés",
+    "nombre_en": "Coffee",
+    "productos": [
+      {
+        "id": 24,
+        "nombre": "Café solo",
+        "nombre_en": "Espresso",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "1.20",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 25,
+        "nombre": "Cortado",
+        "nombre_en": "Cortado",
+        "descripcion": "",
+        "descripcion_en": "Espresso with a dash of milk.",
+        "precio": "1.40",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 26,
+        "nombre": "Café con leche",
+        "nombre_en": "Coffee with milk",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "1.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 27,
+        "nombre": "Bombón",
+        "nombre_en": "Bombón",
+        "descripcion": "",
+        "descripcion_en": "Espresso with condensed milk.",
+        "precio": "1.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 28,
+        "nombre": "Carajillo",
+        "nombre_en": "Carajillo",
+        "descripcion": "",
+        "descripcion_en": "Coffee with a shot of liqueur.",
+        "precio": "2.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 29,
+        "nombre": "Cremaet",
+        "nombre_en": "Cremaet",
+        "descripcion": "",
+        "descripcion_en": "Valencian coffee with flambéed rum, sugar, lemon peel and cinnamon.",
+        "precio": "2.50",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 30,
+        "nombre": "Suplemento",
+        "nombre_en": "Extra",
+        "descripcion": "Leche vegetal, hielo, descafeinado, etc.",
+        "descripcion_en": "Plant-based milk, ice, decaf, etc.",
+        "precio": "0.50",
+        "precio_medio": null,
+        "disponible": true
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "Cervezas y bebidas",
+    "nombre_en": "Beer & drinks",
+    "productos": [
+      {
+        "id": 31,
+        "nombre": "Caña de Estrella Galicia",
+        "nombre_en": "Estrella Galicia draught",
+        "descripcion": "De grifo, 30 cl.",
+        "descripcion_en": "Draught beer, 30 cl.",
+        "precio": "2.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 32,
+        "nombre": "Jarra de Estrella Galicia",
+        "nombre_en": "Estrella Galicia large draught",
+        "descripcion": "De grifo, 40 cl.",
+        "descripcion_en": "Draught beer, 40 cl.",
+        "precio": "3.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 33,
+        "nombre": "Estrella Galicia Especial",
+        "nombre_en": "Estrella Galicia Especial",
+        "descripcion": "Botellín.",
+        "descripcion_en": "Bottle.",
+        "precio": "2.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 34,
+        "nombre": "Estrella Galicia 0,0",
+        "nombre_en": "Estrella Galicia 0.0",
+        "descripcion": "Botellín.",
+        "descripcion_en": "Alcohol-free, bottle.",
+        "precio": "2.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 35,
+        "nombre": "Estrella Galicia 0,0 Tostada",
+        "nombre_en": "Estrella Galicia 0.0 Tostada",
+        "descripcion": "Botellín.",
+        "descripcion_en": "Alcohol-free toasted beer, bottle.",
+        "precio": "2.10",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 36,
+        "nombre": "B Lemon",
+        "nombre_en": "B Lemon",
+        "descripcion": "Cerveza con limón, 33 cl.",
+        "descripcion_en": "Beer with lemon, 33 cl.",
+        "precio": "2.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 37,
+        "nombre": "Agua 0,5 l",
+        "nombre_en": "Water 0.5 l",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "1.00",
+        "precio_medio": null,
+        "disponible": true
+      },
+      {
+        "id": 38,
+        "nombre": "Agua 1 l",
+        "nombre_en": "Water 1 l",
+        "descripcion": "",
+        "descripcion_en": "",
+        "precio": "2.00",
+        "precio_medio": null,
+        "disponible": true
+      }
+    ]
+  }
+]

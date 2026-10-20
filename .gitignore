@@ -1,0 +1,15 @@
+# Python / Django
+backend/.venv/
+__pycache__/
+*.pyc
+# Base de datos local: incluye el usuario del admin. La carta está en carta/fixtures/carta.json
+backend/db.sqlite3
+# Fotos subidas desde el admin (la web publicada usa la copia de frontend/public/media)
+backend/media/
+
+# Originales de las fotos (pesados); las versiones que usa la web están en frontend/public
+fotos/
+
+# Sistema y editores
+.DS_Store
+*.swp

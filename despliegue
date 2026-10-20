@@ -1,0 +1,2 @@
+cd backend && .venv/bin/python manage.py exportar_web   # solo si has tocado la carta o la galería en el admin
+cd ../frontend && npx vercel deploy --prod

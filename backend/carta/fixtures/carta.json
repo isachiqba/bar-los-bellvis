@@ -1,0 +1,635 @@
+[
+  {
+    "pk": 1,
+    "fields": {
+      "orden": 1,
+      "nombre": "Bocadillos",
+      "nombre_en": "Baguette sandwiches"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 1,
+    "fields": {
+      "precio": "7.00",
+      "orden": 1,
+      "nombre": "Tortilla francesa con jamón",
+      "descripcion_en": "French omelette, Serrano ham and a drizzle of olive oil.",
+      "nombre_en": "Omelette & ham",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Tortilla francesa, jamón serrano y un toque de aceite de oliva."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 2,
+    "fields": {
+      "precio": "7.00",
+      "orden": 2,
+      "nombre": "Chivito",
+      "descripcion_en": "Beef, lettuce, tomato, ham, egg and mayonnaise.",
+      "nombre_en": "Chivito",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Ternera, lechuga, tomate, jamón, huevo y mayonesa."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 3,
+    "fields": {
+      "precio": "7.00",
+      "orden": 3,
+      "nombre": "Lomo, tomate y queso",
+      "descripcion_en": "Pork loin, fresh tomato and melted cheese.",
+      "nombre_en": "Pork loin, tomato & cheese",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Lomo de cerdo, tomate natural y queso fundido."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 4,
+    "fields": {
+      "precio": "7.00",
+      "orden": 4,
+      "nombre": "Embutidos",
+      "descripcion_en": "Ham, chorizo, salchichón and cheese.",
+      "nombre_en": "Cured meats",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Jamón, chorizo, salchichón y queso."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 5,
+    "fields": {
+      "precio": "7.00",
+      "orden": 5,
+      "nombre": "De la casa",
+      "descripcion_en": "Chicken, tomato, lettuce and cheese.",
+      "nombre_en": "House special",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Pollo, tomate, lechuga y queso."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 6,
+    "fields": {
+      "precio": "7.00",
+      "orden": 6,
+      "nombre": "Pollo, tomate y queso",
+      "descripcion_en": "Chicken breast, tomato and melted cheese.",
+      "nombre_en": "Chicken, tomato & cheese",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Pechuga de pollo, tomate y queso fundido."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 7,
+    "fields": {
+      "precio": "7.00",
+      "orden": 7,
+      "nombre": "Calamar a la rumana con picadillo y mayonesa",
+      "descripcion_en": "Battered squid rings, chopped tomato and onion, and mayonnaise.",
+      "nombre_en": "Fried squid with chopped salad & mayo",
+      "categoria": 1,
+      "precio_medio": "6.50",
+      "disponible": true,
+      "descripcion": "Calamares a la romana, picadillo de tomate, cebolla y mayonesa."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 2,
+    "fields": {
+      "orden": 2,
+      "nombre": "Para picar",
+      "nombre_en": "To share"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 8,
+    "fields": {
+      "precio": "3.50",
+      "orden": 1,
+      "nombre": "Pan tostado con tomate",
+      "descripcion_en": "",
+      "nombre_en": "Toast with tomato",
+      "categoria": 2,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 9,
+    "fields": {
+      "precio": "6.00",
+      "orden": 2,
+      "nombre": "Patatas bravas",
+      "descripcion_en": "Fried potatoes with spicy sauce.",
+      "nombre_en": "Patatas bravas",
+      "categoria": 2,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 10,
+    "fields": {
+      "precio": "6.50",
+      "orden": 3,
+      "nombre": "Ensaladilla rusa",
+      "descripcion_en": "Potato salad with tuna and mayonnaise.",
+      "nombre_en": "Russian salad",
+      "categoria": 2,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 11,
+    "fields": {
+      "precio": "7.00",
+      "orden": 4,
+      "nombre": "Tortilla de patata",
+      "descripcion_en": "",
+      "nombre_en": "Spanish omelette",
+      "categoria": 2,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 12,
+    "fields": {
+      "precio": "8.00",
+      "orden": 5,
+      "nombre": "Torreznos",
+      "descripcion_en": "Crispy fried pork belly.",
+      "nombre_en": "Torreznos",
+      "categoria": 2,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 3,
+    "fields": {
+      "orden": 3,
+      "nombre": "Pollo y carnes",
+      "nombre_en": "Chicken & meat"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 13,
+    "fields": {
+      "precio": "8.50",
+      "orden": 1,
+      "nombre": "Lágrimas de pollo",
+      "descripcion_en": "",
+      "nombre_en": "Chicken strips",
+      "categoria": 3,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 14,
+    "fields": {
+      "precio": "9.00",
+      "orden": 2,
+      "nombre": "Alitas a la barbacoa",
+      "descripcion_en": "",
+      "nombre_en": "BBQ chicken wings",
+      "categoria": 3,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 15,
+    "fields": {
+      "precio": "9.00",
+      "orden": 3,
+      "nombre": "Alitas al ajillo",
+      "descripcion_en": "",
+      "nombre_en": "Garlic chicken wings",
+      "categoria": 3,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 16,
+    "fields": {
+      "precio": "9.50",
+      "orden": 4,
+      "nombre": "Pulled pork",
+      "descripcion_en": "",
+      "nombre_en": "Pulled pork",
+      "categoria": 3,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 4,
+    "fields": {
+      "orden": 4,
+      "nombre": "Del mar",
+      "nombre_en": "From the sea"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 17,
+    "fields": {
+      "precio": "9.00",
+      "orden": 1,
+      "nombre": "Colitas de gamba rebozadas",
+      "descripcion_en": "",
+      "nombre_en": "Battered prawn tails",
+      "categoria": 4,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 18,
+    "fields": {
+      "precio": "9.50",
+      "orden": 2,
+      "nombre": "Calamar a la romana",
+      "descripcion_en": "",
+      "nombre_en": "Fried squid rings",
+      "categoria": 4,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 19,
+    "fields": {
+      "precio": "10.00",
+      "orden": 3,
+      "nombre": "Chipirones a la plancha",
+      "descripcion_en": "Tender grilled baby squid with garlic, parsley and lemon.",
+      "nombre_en": "Grilled baby squid",
+      "categoria": 4,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Tiernos chipirones a la plancha con ajo, perejil y limón."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 20,
+    "fields": {
+      "precio": "12.00",
+      "orden": 4,
+      "nombre": "Calamar a la plancha",
+      "descripcion_en": "Whole grilled squid with garlic, parsley and lemon.",
+      "nombre_en": "Grilled squid",
+      "categoria": 4,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Calamar entero a la plancha con ajo, perejil y limón."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 5,
+    "fields": {
+      "orden": 5,
+      "nombre": "Croquetas",
+      "nombre_en": "Croquettes"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 21,
+    "fields": {
+      "precio": "8.00",
+      "orden": 1,
+      "nombre": "Croquetas de jamón",
+      "descripcion_en": "",
+      "nombre_en": "Ham croquettes",
+      "categoria": 5,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 22,
+    "fields": {
+      "precio": "8.50",
+      "orden": 2,
+      "nombre": "Croquetas de sepia",
+      "descripcion_en": "",
+      "nombre_en": "Cuttlefish croquettes",
+      "categoria": 5,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 23,
+    "fields": {
+      "precio": "10.50",
+      "orden": 3,
+      "nombre": "Croquetas de gambón rojo",
+      "descripcion_en": "",
+      "nombre_en": "Red prawn croquettes",
+      "categoria": 5,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 6,
+    "fields": {
+      "orden": 6,
+      "nombre": "Cafés",
+      "nombre_en": "Coffee"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 24,
+    "fields": {
+      "precio": "1.20",
+      "orden": 1,
+      "nombre": "Café solo",
+      "descripcion_en": "",
+      "nombre_en": "Espresso",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 25,
+    "fields": {
+      "precio": "1.40",
+      "orden": 2,
+      "nombre": "Cortado",
+      "descripcion_en": "Espresso with a dash of milk.",
+      "nombre_en": "Cortado",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 26,
+    "fields": {
+      "precio": "1.50",
+      "orden": 3,
+      "nombre": "Café con leche",
+      "descripcion_en": "",
+      "nombre_en": "Coffee with milk",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 27,
+    "fields": {
+      "precio": "1.50",
+      "orden": 4,
+      "nombre": "Bombón",
+      "descripcion_en": "Espresso with condensed milk.",
+      "nombre_en": "Bombón",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 28,
+    "fields": {
+      "precio": "2.00",
+      "orden": 5,
+      "nombre": "Carajillo",
+      "descripcion_en": "Coffee with a shot of liqueur.",
+      "nombre_en": "Carajillo",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 29,
+    "fields": {
+      "precio": "2.50",
+      "orden": 6,
+      "nombre": "Cremaet",
+      "descripcion_en": "Valencian coffee with flambéed rum, sugar, lemon peel and cinnamon.",
+      "nombre_en": "Cremaet",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 30,
+    "fields": {
+      "precio": "0.50",
+      "orden": 7,
+      "nombre": "Suplemento",
+      "descripcion_en": "Plant-based milk, ice, decaf, etc.",
+      "nombre_en": "Extra",
+      "categoria": 6,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Leche vegetal, hielo, descafeinado, etc."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 7,
+    "fields": {
+      "orden": 7,
+      "nombre": "Cervezas y bebidas",
+      "nombre_en": "Beer & drinks"
+    },
+    "model": "carta.categoria"
+  },
+  {
+    "pk": 31,
+    "fields": {
+      "precio": "2.00",
+      "orden": 1,
+      "nombre": "Caña de Estrella Galicia",
+      "descripcion_en": "Draught beer, 30 cl.",
+      "nombre_en": "Estrella Galicia draught",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "De grifo, 30 cl."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 32,
+    "fields": {
+      "precio": "3.00",
+      "orden": 2,
+      "nombre": "Jarra de Estrella Galicia",
+      "descripcion_en": "Draught beer, 40 cl.",
+      "nombre_en": "Estrella Galicia large draught",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "De grifo, 40 cl."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 33,
+    "fields": {
+      "precio": "2.00",
+      "orden": 3,
+      "nombre": "Estrella Galicia Especial",
+      "descripcion_en": "Bottle.",
+      "nombre_en": "Estrella Galicia Especial",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Botellín."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 34,
+    "fields": {
+      "precio": "2.00",
+      "orden": 4,
+      "nombre": "Estrella Galicia 0,0",
+      "descripcion_en": "Alcohol-free, bottle.",
+      "nombre_en": "Estrella Galicia 0.0",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Botellín."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 35,
+    "fields": {
+      "precio": "2.10",
+      "orden": 5,
+      "nombre": "Estrella Galicia 0,0 Tostada",
+      "descripcion_en": "Alcohol-free toasted beer, bottle.",
+      "nombre_en": "Estrella Galicia 0.0 Tostada",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Botellín."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 36,
+    "fields": {
+      "precio": "2.00",
+      "orden": 6,
+      "nombre": "B Lemon",
+      "descripcion_en": "Beer with lemon, 33 cl.",
+      "nombre_en": "B Lemon",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": "Cerveza con limón, 33 cl."
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 37,
+    "fields": {
+      "precio": "1.00",
+      "orden": 7,
+      "nombre": "Agua 0,5 l",
+      "descripcion_en": "",
+      "nombre_en": "Water 0.5 l",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  },
+  {
+    "pk": 38,
+    "fields": {
+      "precio": "2.00",
+      "orden": 8,
+      "nombre": "Agua 1 l",
+      "descripcion_en": "",
+      "nombre_en": "Water 1 l",
+      "categoria": 7,
+      "precio_medio": null,
+      "disponible": true,
+      "descripcion": ""
+    },
+    "model": "carta.producto"
+  }
+]
