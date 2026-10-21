@@ -8,9 +8,40 @@ import { bar, estadoHoy } from '../bar'
 import { localeIntl, t } from '../i18n'
 
 const hoy = estadoHoy()
+
+const datos = computed(() => [
+  { icono: 'estrella', valor: bar.valoracion.nota, texto: t('portada.enGoogle') },
+  { icono: 'reloj', valor: '8:30', texto: t('portada.abrimos') },
+  { icono: 'grupo', valor: t('portada.dias'), texto: t('portada.semana') },
+])
 const diaHoy = computed(() =>
   new Intl.DateTimeFormat(localeIntl.value, { weekday: 'long' }).format(new Date()),
 )
+
+// Iconos (estilo Lucide, 24×24)
+const iconos = {
+  ubicacion: [
+    'M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0',
+    'M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z',
+  ],
+  calendario: [
+    'M8 2v4',
+    'M16 2v4',
+    'M3 10h18',
+    'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z',
+  ],
+  lista: ['M3 12h.01', 'M3 18h.01', 'M3 6h.01', 'M8 12h13', 'M8 18h13', 'M8 6h13'],
+  estrella: [
+    'M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.12 2.12 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.12 2.12 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.12 2.12 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.12 2.12 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.12 2.12 0 0 0 1.597-1.16z',
+  ],
+  reloj: ['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z', 'M12 6v6l4 2'],
+  grupo: [
+    'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2',
+    'M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
+    'M22 21v-2a4 4 0 0 0-3-3.87',
+    'M16 3.13a4 4 0 0 1 0 7.75',
+  ],
+}
 
 const microfono = [
   'M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z',
@@ -35,38 +66,45 @@ const microfono = [
       <div class="contenedor portada__rejilla">
         <div class="portada__texto">
           <p class="insignia entrada">
-            <span class="insignia__punto"></span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path v-for="d in iconos.ubicacion" :key="d" :d="d" />
+            </svg>
             Bar · Plaça Major · Benissuera
           </p>
 
-          <!-- El nombre ya está en la cabecera: este título es solo para buscadores y lectores de pantalla -->
-          <h1 class="solo-lectores">{{ bar.nombre }} · {{ t('portada.subtitulo') }}</h1>
-
-          <p class="portada__subtitulo entrada" style="animation-delay: 250ms">
-            {{ t('portada.subtitulo') }}
-          </p>
+          <h1 class="entrada" style="animation-delay: 150ms">
+            {{ t('portada.titulo')[0] }}
+            <span class="dorado">{{ t('portada.titulo')[1] }}</span>
+          </h1>
 
           <p class="portada__lema entrada" style="animation-delay: 350ms">
             {{ t('portada.lema') }}
           </p>
 
           <div class="portada__botones entrada" style="animation-delay: 450ms">
-            <a href="#reservas" class="boton">{{ t('nav.reservar') }}</a>
-            <a href="#carta" class="boton boton--borde">{{ t('portada.verCarta') }}</a>
+            <a href="#reservas" class="boton">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path v-for="d in iconos.calendario" :key="d" :d="d" />
+              </svg>
+              {{ t('nav.reservar') }}
+            </a>
+            <a href="#carta" class="boton boton--borde">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path v-for="d in iconos.lista" :key="d" :d="d" />
+              </svg>
+              {{ t('portada.verCarta') }}
+            </a>
           </div>
 
           <dl class="datos entrada" style="animation-delay: 600ms">
-            <div>
-              <dt class="dorado">{{ bar.valoracion.nota }}★</dt>
-              <dd>{{ t('portada.enGoogle') }}</dd>
-            </div>
-            <div>
-              <dt class="dorado">8:30</dt>
-              <dd>{{ t('portada.abrimos') }}</dd>
-            </div>
-            <div>
-              <dt class="dorado">{{ t('portada.dias') }}</dt>
-              <dd>{{ t('portada.semana') }}</dd>
+            <div v-for="dato in datos" :key="dato.icono">
+              <dt>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path v-for="d in iconos[dato.icono]" :key="d" :d="d" />
+                </svg>
+                {{ dato.valor }}
+              </dt>
+              <dd>{{ dato.texto }}</dd>
             </div>
           </dl>
         </div>
@@ -133,7 +171,7 @@ const microfono = [
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(6px) saturate(1.1);
+  filter: blur(3px) saturate(1.1);
   /* Ampliada para que el desenfoque no deje bordes claros */
   transform: scale(1.08);
 }
@@ -182,28 +220,35 @@ const microfono = [
   text-transform: uppercase;
 }
 
-.insignia__punto {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-oro);
+.insignia svg,
+.portada__botones svg,
+.datos svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-/* Sin cursiva y con más grosor para que se lea bien sobre la foto, también en móvil */
-.portada__subtitulo {
-  max-width: 32rem;
-  font-family: var(--fuente-texto);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--color-texto);
-  text-shadow: 0 2px 16px rgb(0 0 0 / 0.55);
+.portada h1 {
+  font-size: clamp(3rem, 7vw, 5.75rem);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 4px 24px rgb(0 0 0 / 0.5);
+}
+
+.portada h1 .dorado {
+  display: block;
 }
 
 .portada__lema {
   max-width: 30rem;
-  font-size: 1.125rem;
-  color: rgb(255 243 224 / 0.75);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 500;
+  color: var(--color-texto);
 }
 
 .portada__botones {
@@ -219,27 +264,45 @@ const microfono = [
 .datos {
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem;
   margin-bottom: 0;
 }
 
+.datos > div {
+  padding: 0 1.75rem;
+  border-left: 1px solid rgb(212 168 67 / 0.25);
+}
+
+.datos > div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
 .datos dt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--fuente-titulos);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
+  color: var(--color-oro);
+}
+
+.datos dt svg {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .datos dd {
   margin: 0.2rem 0 0;
   font-size: 0.75rem;
-  color: rgb(255 243 224 / 0.55);
+  color: rgb(255 243 224 / 0.6);
 }
 
 /* Imagen destacada en círculo con etiquetas flotantes */
 .destacado {
   position: relative;
   justify-self: center;
-  width: min(100%, 26rem);
+  width: min(100%, 30rem);
   aspect-ratio: 1;
 }
 
@@ -399,14 +462,41 @@ const microfono = [
 }
 
 @media (max-width: 520px) {
+  .portada__botones {
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+  }
+
   .portada__botones .boton {
     flex: 1 1 0;
-    padding-inline: 1rem;
+    gap: 0.4rem;
+    padding: 0.85rem 0.5rem;
+    font-size: 0.9rem;
     white-space: nowrap;
   }
 
+  /* Tres columnas iguales para que las cifras no salten de línea */
   .datos {
-    gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .datos > div {
+    padding: 0 0.75rem;
+  }
+
+  .datos dt {
+    gap: 0.35rem;
+    font-size: 1.2rem;
+  }
+
+  .datos dt svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .datos dd {
+    font-size: 0.7rem;
   }
 
   .datos dd {
