@@ -193,7 +193,7 @@ const microfono = [
 .portada__rejilla {
   position: relative;
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: 1fr 1.05fr;
   align-items: center;
   gap: 3rem;
   padding-top: 7.5rem;
@@ -302,7 +302,7 @@ const microfono = [
 .destacado {
   position: relative;
   justify-self: center;
-  width: min(100%, 30rem);
+  width: min(100%, 34rem);
   aspect-ratio: 1;
 }
 
@@ -437,6 +437,13 @@ const microfono = [
   background: linear-gradient(to bottom, var(--color-oro), transparent);
 }
 
+/* En pantallas medianas el círculo llega al borde: la tarjeta no debe salirse */
+@media (max-width: 1200px) {
+  .flotante--arriba {
+    right: 0;
+  }
+}
+
 @media (max-width: 900px) {
   .portada__rejilla {
     grid-template-columns: 1fr;
@@ -445,7 +452,7 @@ const microfono = [
   }
 
   .destacado {
-    width: min(78%, 20rem);
+    width: min(84%, 23rem);
   }
 
   .flotante--arriba {
