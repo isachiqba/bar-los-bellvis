@@ -312,10 +312,10 @@ const microfono = [
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgb(212 168 67 / 0.6);
-  box-shadow:
-    0 0 0 14px rgb(212 168 67 / 0.08),
-    0 0 0 15px rgb(212 168 67 / 0.25),
-    0 40px 80px -20px rgb(0 0 0 / 0.7);
+  box-shadow: 0 40px 80px -20px rgb(0 0 0 / 0.7);
+  /* Anillo exterior: solo la línea dorada, sin relleno */
+  outline: 1.5px solid rgb(212 168 67 / 0.5);
+  outline-offset: 12px;
 }
 
 .destacado__circulo img {
