@@ -39,10 +39,8 @@ const microfono = [
             Bar · Plaça Major · Benissuera
           </p>
 
-          <h1 class="entrada" style="animation-delay: 150ms">
-            {{ t('portada.bienvenida')[0] }}
-            <span class="dorado">{{ t('portada.bienvenida')[1] }}</span>
-          </h1>
+          <!-- El nombre ya está en la cabecera: este título es solo para buscadores y lectores de pantalla -->
+          <h1 class="solo-lectores">{{ bar.nombre }} · {{ t('portada.subtitulo') }}</h1>
 
           <p class="portada__subtitulo entrada" style="animation-delay: 250ms">
             {{ t('portada.subtitulo') }}
@@ -191,14 +189,7 @@ const microfono = [
   background: var(--color-oro);
 }
 
-.portada h1 {
-  font-size: clamp(2.25rem, 5.5vw, 4.25rem);
-  line-height: 1.05;
-  white-space: nowrap;
-}
-
 .portada__subtitulo {
-  margin-top: 1rem !important;
   font-family: var(--fuente-titulos);
   font-size: clamp(1.2rem, 2.2vw, 1.5rem);
   font-style: italic;
