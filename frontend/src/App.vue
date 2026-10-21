@@ -108,8 +108,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', alHacerScroll))
       </div>
     </div>
     <p class="pie__copy">
-      © {{ new Date().getFullYear() }} {{ bar.nombre }} · {{ t('pie.desarrolladoPor') }}
-      <a href="https://lorba.es" target="_blank" rel="noopener" class="pie__autor">Lorba SL</a>
+      © {{ new Date().getFullYear() }} {{ bar.nombre }} · {{ t('pie.creadoPor') }}
+      <a href="https://lorba.es" target="_blank" rel="noopener" class="pie__autor">Lorba</a>
     </p>
   </footer>
 </template>
