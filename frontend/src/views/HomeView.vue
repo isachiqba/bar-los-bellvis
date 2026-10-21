@@ -311,7 +311,7 @@ const microfono = [
   inset: 0;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid rgb(212 168 67 / 0.6);
+  border: 1.5px solid rgb(212 168 67 / 0.6);
   box-shadow: 0 40px 80px -20px rgb(0 0 0 / 0.7);
   /* Anillo exterior: solo la línea dorada, sin relleno */
   outline: 1.5px solid rgb(212 168 67 / 0.5);
