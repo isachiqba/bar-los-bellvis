@@ -13,3 +13,7 @@ fotos/
 # Sistema y editores
 .DS_Store
 *.swp
+
+# Vercel (enlace local de la CLI y tokens)
+.vercel/
+.env*.local

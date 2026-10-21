@@ -1,0 +1,9 @@
+# Solo para publicar a mano con la CLI: Vercel construye la web desde frontend/
+backend/
+fotos/
+**/node_modules
+frontend/dist
+frontend/Dockerfile
+frontend/.dockerignore
+frontend/.eslintcache
+.env*.local

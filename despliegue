@@ -1,2 +1,10 @@
-cd backend && .venv/bin/python manage.py exportar_web   # solo si has tocado la carta o la galería en el admin
-cd ../frontend && npx vercel deploy --prod
+# Publicar la web (Vercel publica sola cada push a main)
+
+# 1. Solo si has tocado la carta o la galería en el admin:
+cd backend && .venv/bin/python manage.py exportar_web && cd ..
+
+# 2. Guardar y subir los cambios; Vercel los publica en 1-2 minutos:
+git add -A && git commit -m "Describe el cambio" && git push
+
+# Publicar a mano sin pasar por GitHub (desde la raíz del proyecto):
+# npx vercel deploy --prod
