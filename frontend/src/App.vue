@@ -32,7 +32,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', alHacerScroll))
   >
     <nav class="contenedor cabecera__fila">
       <a href="#inicio" class="marca" @click="menuAbierto = false">
-        <span class="marca__nombre"><span class="dorado">Bar</span> Los Bellvis</span>
+        <span class="marca__nombre"><span class="dorado">Bar</span> Los Bellvís</span>
         <span class="marca__sub">Benissuera · Valencia</span>
       </a>
 
@@ -89,7 +89,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', alHacerScroll))
   <footer class="pie">
     <div class="contenedor pie__rejilla">
       <div>
-        <p class="marca__nombre"><span class="dorado">Bar</span> Los Bellvis</p>
+        <p class="marca__nombre"><span class="dorado">Bar</span> Los Bellvís</p>
         <p class="marca__sub">{{ t('pie.sub') }}</p>
         <p class="pie__texto">{{ tr(bar.lema) }}.</p>
       </div>

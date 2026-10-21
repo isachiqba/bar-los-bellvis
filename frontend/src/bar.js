@@ -1,7 +1,7 @@
 // Datos del bar que se muestran en la web.
 // Los textos visibles van en los dos idiomas: { es: '…', en: '…' }
 export const bar = {
-  nombre: 'Bar Los Bellvis',
+  nombre: 'Bar Los Bellvís',
   lema: {
     es: 'El bar de siempre, en la Plaça Major de Benissuera',
     en: 'Your local bar on the Plaça Major in Benissuera',
