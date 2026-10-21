@@ -23,7 +23,7 @@ const textos = {
     portada: {
       alt: 'Tapas y cervezas en el Bar Bellvís',
       bienvenida: ['Bar', 'Los Bellvís'],
-      subtitulo: 'La casa de todos.',
+      subtitulo: 'La casa de todos en el corazón del pueblo.',
       lema: 'Almuerzos, tapas y buen ambiente.',
       enGoogle: 'En Google',
       abrimos: 'Abrimos por la mañana',
@@ -117,7 +117,7 @@ const textos = {
     portada: {
       alt: 'Tapas and beers at Bar Bellvís',
       bienvenida: ['Bar', 'Los Bellvís'],
-      subtitulo: 'Everyone’s home.',
+      subtitulo: 'Everyone’s home in the heart of the village.',
       lema: 'Almuerzo, tapas and a great atmosphere.',
       enGoogle: 'On Google',
       abrimos: 'We open in the morning',

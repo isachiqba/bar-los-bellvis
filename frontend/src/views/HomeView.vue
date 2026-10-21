@@ -192,12 +192,9 @@ const microfono = [
 }
 
 .portada h1 {
-  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-size: clamp(2.25rem, 5.5vw, 4.25rem);
   line-height: 1.05;
-}
-
-.portada h1 .dorado {
-  display: block;
+  white-space: nowrap;
 }
 
 .portada__subtitulo {
