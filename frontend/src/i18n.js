@@ -18,7 +18,7 @@ const textos = {
       sub: 'Bar · Benissuera, Valencia',
       contacto: 'Contacto',
       navegacion: 'Navegación',
-      hechoPor: 'Hecho por',
+      desarrolladoPor: 'Desarrollado por',
     },
     portada: {
       alt: 'Tapas y cervezas en el Bar Bellvis',
@@ -112,7 +112,7 @@ const textos = {
       sub: 'Bar · Benissuera, Valencia',
       contacto: 'Contact',
       navegacion: 'Navigation',
-      hechoPor: 'Made by',
+      desarrolladoPor: 'Developed by',
     },
     portada: {
       alt: 'Tapas and beers at Bar Bellvis',

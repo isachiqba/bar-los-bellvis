@@ -108,7 +108,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', alHacerScroll))
       </div>
     </div>
     <p class="pie__copy">
-      © {{ new Date().getFullYear() }} {{ bar.nombre }} · {{ t('pie.hechoPor') }} Lorba SL
+      © {{ new Date().getFullYear() }} {{ bar.nombre }} · {{ t('pie.desarrolladoPor') }}
+      <a href="https://lorba.es" target="_blank" rel="noopener" class="pie__autor">Lorba SL</a>
     </p>
   </footer>
 </template>
@@ -315,5 +316,15 @@ onBeforeUnmount(() => window.removeEventListener('scroll', alHacerScroll))
   text-align: center;
   font-size: 0.75rem;
   color: rgb(255 243 224 / 0.3);
+}
+
+.pie__autor {
+  color: rgb(255 243 224 / 0.5);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pie__autor:hover {
+  color: var(--color-oro);
 }
 </style>
