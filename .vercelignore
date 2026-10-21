@@ -1,6 +1,6 @@
-# Solo para publicar a mano con la CLI: Vercel construye la web desde frontend/
-backend/
-fotos/
+# Archivos que Vercel no necesita para construir la web (reglas con / = solo en la raíz)
+/backend/
+/fotos/
 **/node_modules
 frontend/dist
 frontend/Dockerfile
