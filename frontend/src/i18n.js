@@ -41,6 +41,7 @@ const textos = {
       descubrir: 'Descubrir',
     },
     servicios: {
+      saberMas: 'Saber más',
       antetitulo: 'Servicios',
       titulo: ['Celebra', 'con nosotros'],
       intro:
@@ -134,6 +135,7 @@ const textos = {
       descubrir: 'Discover',
     },
     servicios: {
+      saberMas: 'Learn more',
       antetitulo: 'Events',
       titulo: ['Celebrate', 'with us'],
       intro:

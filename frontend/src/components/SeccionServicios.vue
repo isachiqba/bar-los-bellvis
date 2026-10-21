@@ -1,6 +1,15 @@
 <script setup>
-import { bar } from '../bar'
-import { t, tr } from '../i18n'
+import { bar, whatsappUrl } from '../bar'
+import { idioma, t, tr } from '../i18n'
+
+// Mensaje para WhatsApp: siempre en castellano, que es lo que lee el bar
+function enlaceInfo(servicio) {
+  const lineas = [`Hola, me gustaría más información sobre: ${servicio.titulo.es}`]
+  if (idioma.value === 'en') lineas.push('(Consulta hecha desde la web en inglés)')
+  return whatsappUrl(lineas.join('\n'))
+}
+
+const iconoMensaje = 'M7.9 20A9 9 0 1 0 4 16.1L2 22Z'
 
 // Trazos de los iconos (estilo Lucide, 24×24)
 const iconos = {
@@ -64,6 +73,15 @@ const iconos = {
             </span>
             <h3>{{ tr(servicio.titulo) }}</h3>
             <p>{{ tr(servicio.texto) }}</p>
+            <a
+              :href="enlaceInfo(servicio)"
+              target="_blank"
+              rel="noopener"
+              class="boton boton--borde boton--pequeno servicio__boton"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path :d="iconoMensaje" /></svg>
+              {{ t('servicios.saberMas') }}
+            </a>
           </div>
         </li>
       </ul>
@@ -84,7 +102,9 @@ const iconos = {
 }
 
 .servicio {
+  display: flex;
   flex: 1 1 18rem;
+  flex-direction: column;
   max-width: 23rem;
   border-radius: 1.25rem;
   overflow: hidden;
@@ -125,7 +145,26 @@ const iconos = {
 }
 
 .servicio__cuerpo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 2rem 1.75rem;
+}
+
+/* Abajo del todo, para que los botones queden alineados entre tarjetas */
+.servicio__boton {
+  margin-top: auto;
+}
+
+.servicio__boton svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Con foto, el icono se monta sobre el borde inferior de la imagen */
@@ -170,7 +209,7 @@ const iconos = {
 }
 
 .servicio p {
-  margin: 0;
+  margin: 0 0 1.5rem;
   font-size: 0.9rem;
   color: var(--color-suave);
 }
