@@ -8,7 +8,7 @@ backend/db.sqlite3
 backend/media/
 
 # Originales de las fotos (pesados); las versiones que usa la web están en frontend/public
-fotos/
+/fotos/
 
 # Sistema y editores
 .DS_Store
