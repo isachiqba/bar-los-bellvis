@@ -189,11 +189,15 @@ const microfono = [
   background: var(--color-oro);
 }
 
+/* Sin cursiva y con más grosor para que se lea bien sobre la foto, también en móvil */
 .portada__subtitulo {
-  font-family: var(--fuente-titulos);
-  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
-  font-style: italic;
-  color: var(--color-oro-claro);
+  max-width: 32rem;
+  font-family: var(--fuente-texto);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-texto);
+  text-shadow: 0 2px 16px rgb(0 0 0 / 0.55);
 }
 
 .portada__lema {
