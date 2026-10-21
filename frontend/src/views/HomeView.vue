@@ -506,8 +506,42 @@ const microfono = [
     font-size: 0.7rem;
   }
 
-  .datos dd {
-    font-size: 0.7rem;
+  /* Tarjetas flotantes más compactas en móvil */
+  .flotante {
+    padding: 0.45rem 0.65rem;
+    border-radius: 0.7rem;
+  }
+
+  .flotante__etiqueta {
+    font-size: 0.62rem;
+  }
+
+  .flotante__etiqueta svg {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+
+  .flotante__texto {
+    font-size: 0.75rem;
+  }
+
+  .flotante__horas {
+    font-size: 0.62rem;
+  }
+
+  .estado__punto {
+    width: 6px;
+    height: 6px;
+  }
+
+  .flotante--arriba {
+    top: 2%;
+    right: -6%;
+  }
+
+  .flotante--abajo {
+    bottom: 4%;
+    left: -8%;
   }
 }
 </style>
