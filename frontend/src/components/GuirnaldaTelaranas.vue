@@ -183,9 +183,25 @@ const posadasEsquina = [
   inset: 0 0 auto;
   height: 200px;
   pointer-events: none;
-  /* Se desvanece hacia abajo para no competir con el texto */
-  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
-  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  /* Centro del nombre del bar en la cabecera (mismo margen que .contenedor) */
+  --nombre-x: calc(max(1.5rem, 50% - var(--ancho-max) / 2 + 1.5rem) + 5.5rem);
+  /* Se desvanece hacia abajo y se aclara detrás del nombre para que se lea bien */
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 70%, transparent),
+    radial-gradient(
+      9rem 3.2rem at var(--nombre-x) 2.2rem,
+      rgb(0 0 0 / 0.12) 55%,
+      #000 100%
+    );
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, #000 70%, transparent),
+    radial-gradient(
+      9rem 3.2rem at var(--nombre-x) 2.2rem,
+      rgb(0 0 0 / 0.12) 55%,
+      #000 100%
+    );
+  mask-composite: intersect;
 }
 
 svg {
