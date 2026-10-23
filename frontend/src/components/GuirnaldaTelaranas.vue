@@ -8,36 +8,62 @@ const curva = (y0, combado) => (x) => {
   const t = x / ANCHO
   return y0 + 4 * combado * t * (1 - t)
 }
-const hilo1 = curva(6, 34)
-const hilo2 = curva(14, 52)
-
-// Hilos que unen las dos curvas, como en una tela
-const cruces = [40, 85, 130, 190, 235, 280]
-  .map((x) => `M${x} ${hilo1(x).toFixed(1)}L${x + 6} ${hilo2(x + 6).toFixed(1)}`)
+// Varias capas de hilos combados, de la más tensa a la más caída
+const capas = [curva(4, 22), curva(7, 34), curva(10, 45), curva(13, 55), curva(16, 64)]
+const hiloBajo = capas.at(-1)
+const curvasTela = capas
+  .map((f) => `M0 ${f(0)}Q${ANCHO / 2} ${(2 * f(ANCHO / 2) - f(0)).toFixed(1)} ${ANCHO} ${f(0)}`)
   .join('')
 
-// Abanico pequeño en el punto donde se unen dos tramos
-const nudo = [10, 25, 40, 55]
-  .flatMap((a) => {
-    const r = 26
-    const rad = (a * Math.PI) / 180
-    const x = r * Math.cos(rad)
-    const y = 6 + r * Math.sin(rad)
-    return [
-      `M0 6L${x.toFixed(1)} ${y.toFixed(1)}`,
-      `M${ANCHO} 6L${(ANCHO - x).toFixed(1)} ${y.toFixed(1)}`,
-    ]
+// Hilos que unen cada capa con la siguiente, en zigzag, como en una tela
+const cruces = capas
+  .slice(0, -1)
+  .flatMap((f, k) => {
+    const sig = capas[k + 1]
+    const desfase = k % 2 ? 11 : 0
+    const xs = []
+    for (let x = 14 + desfase; x < ANCHO - 8; x += 22) xs.push(x)
+    return xs.map((x) => `M${x} ${f(x).toFixed(1)}L${x + 5} ${sig(x + 5).toFixed(1)}`)
   })
   .join('')
+
+// Nudo de telaraña donde se unen dos tramos: abanico con sus vueltas
+const angulosNudo = [8, 22, 36, 50, 64, 78]
+const nudoMitad = (lado) => {
+  const sx = lado === 'izq' ? 1 : -1
+  const ox = lado === 'izq' ? 0 : ANCHO
+  const p = (r, a) => [
+    ox + sx * r * Math.cos((a * Math.PI) / 180),
+    4 + r * Math.sin((a * Math.PI) / 180),
+  ]
+  const radios = angulosNudo.map(
+    (a) =>
+      `M${ox} 4L${p(34, a)
+        .map((n) => n.toFixed(1))
+        .join(' ')}`,
+  )
+  const vueltas = [10, 18, 26, 34].map((r) =>
+    angulosNudo
+      .map((a, i) => {
+        const [x, y] = p(r, a).map((n) => n.toFixed(1))
+        if (i === 0) return `M${x} ${y}`
+        const [cx, cy] = p(r * 0.88, (a + angulosNudo[i - 1]) / 2).map((n) => n.toFixed(1))
+        return `Q${cx} ${cy} ${x} ${y}`
+      })
+      .join(''),
+  )
+  return radios.join('') + vueltas.join('')
+}
+const nudo = nudoMitad('izq') + nudoMitad('der')
 
 // Hilos que cuelgan: posición, largo y tamaño de la araña
 const colgantes = [
   { x: 55, largo: 62, tam: 1 },
   { x: 108, largo: 34, tam: 0.7 },
-  { x: 168, largo: 58, tam: 1.2 },
+  { x: 168, largo: 42, tam: 1.2 },
   { x: 222, largo: 46, tam: 0.8 },
   { x: 276, largo: 74, tam: 1 },
-].map((c) => ({ ...c, y: hilo2(c.x) }))
+].map((c) => ({ ...c, y: hiloBajo(c.x) }))
 
 // Arañita dibujada con el extremo del hilo en (0, 0): patas (4 por lado), cabeza y abdomen
 const patas = [
@@ -50,8 +76,8 @@ const patasAranita = patas.join('') // el otro lado es el mismo trazo reflejado
 const transformAranita = (c) => `translate(${c.x} ${(c.y + c.largo).toFixed(1)}) scale(${c.tam})`
 
 // Telaraña de esquina (se dibuja para la izquierda y se refleja para la derecha)
-const angulos = [6, 22, 38, 54, 70, 84]
-const vueltas = [16, 32, 50, 70, 92, 116]
+const angulos = [5, 14, 23, 32, 41, 50, 59, 68, 77, 86]
+const vueltas = [10, 20, 31, 43, 56, 70, 85, 100, 116]
 const punto = (r, a) => [r * Math.cos((a * Math.PI) / 180), r * Math.sin((a * Math.PI) / 180)]
 const radiosEsquina = angulos
   .map(
@@ -77,6 +103,23 @@ const colgantesEsquina = [
   { x: 40, y: 58, largo: 70, tam: 1.1 },
   { x: 78, y: 44, largo: 40, tam: 0.8 },
 ]
+
+// Arañitas posadas sobre la tela (sin hilo): posición, tamaño y giro.
+// El dibujo de la araña tiene el centro del cuerpo hacia (0, 6)
+const posada = (x, y, tam, giro) => ({
+  transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${giro}) scale(${tam}) translate(0 -6)`,
+})
+const posadasTela = [
+  posada(92, capas[1](92), 0.9, 15),
+  posada(246, capas[2](246), 1, -20),
+  posada(150, capas[3](150), 0.75, 5),
+  posada(...punto(22, 45).map((n, i) => (i ? n + 4 : n)), 0.7, 135),
+]
+const posadasEsquina = [
+  posada(...punto(56, 32), 1, 125),
+  posada(...punto(85, 62), 0.8, 150),
+  posada(...punto(31, 75), 0.65, 100),
+]
 </script>
 
 <template>
@@ -84,8 +127,7 @@ const colgantesEsquina = [
     <svg class="guirnalda__tira" width="100%" height="190">
       <defs>
         <pattern id="tramo-telarana" :width="ANCHO" height="190" patternUnits="userSpaceOnUse">
-          <path :d="`M0 6Q${ANCHO / 2} ${6 + 68} ${ANCHO} 6`" />
-          <path :d="`M0 14Q${ANCHO / 2} ${14 + 104} ${ANCHO} 14`" />
+          <path :d="curvasTela" />
           <path class="fino" :d="cruces + nudo" />
           <g v-for="c in colgantes" :key="c.x" class="colgante">
             <path class="fino" :d="`M${c.x} ${c.y.toFixed(1)}V${(c.y + c.largo).toFixed(1)}`" />
@@ -95,6 +137,12 @@ const colgantesEsquina = [
               <circle class="aranita__cuerpo" cy="3" r="2" />
               <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
             </g>
+          </g>
+          <g v-for="(a, i) in posadasTela" :key="'p' + i" class="aranita" :transform="a.transform">
+            <path class="aranita__patas" :d="patasAranita" />
+            <path class="aranita__patas" :d="patasAranita" transform="scale(-1 1)" />
+            <circle class="aranita__cuerpo" cy="3" r="2" />
+            <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
           </g>
         </pattern>
       </defs>
@@ -118,6 +166,12 @@ const colgantesEsquina = [
           <circle class="aranita__cuerpo" cy="3" r="2" />
           <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
         </g>
+      </g>
+      <g v-for="(a, i) in posadasEsquina" :key="'e' + i" class="aranita" :transform="a.transform">
+        <path class="aranita__patas" :d="patasAranita" />
+        <path class="aranita__patas" :d="patasAranita" transform="scale(-1 1)" />
+        <circle class="aranita__cuerpo" cy="3" r="2" />
+        <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
       </g>
     </svg>
   </div>
