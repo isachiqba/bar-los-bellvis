@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import GuirnaldaTelaranas from '../components/GuirnaldaTelaranas.vue'
 import SeccionCarta from '../components/SeccionCarta.vue'
 import SeccionGaleria from '../components/SeccionGaleria.vue'
 import SeccionServicios from '../components/SeccionServicios.vue'
@@ -64,21 +65,8 @@ const microfono = [
       />
       <div class="portada__velo"></div>
 
-      <!-- Halloween: telaraña en la esquina (solo en temporada) -->
-      <template v-if="esHalloween">
-        <svg class="telarana" viewBox="0 0 200 200" aria-hidden="true">
-          <path
-            class="telarana__radios"
-            d="M0 0L185.5 13.0M0 0L179.7 48.1M0 0L167.2 81.5M0 0L148.5 111.9M0 0L124.5 138.2M0 0L95.8 159.4M0 0L63.6 174.8M0 0L29.1 183.7M0 0L6.5 185.9"
-          />
-          <path
-            d="M20.0 1.4Q17.0 2.8 19.3 5.2Q16.1 6.0 18.0 8.8Q14.7 9.0 16.0 12.0Q12.7 11.6 13.4 14.9Q10.2 13.8 10.3 17.1Q7.4 15.5 6.8 18.8Q4.3 16.7 3.1 19.8Q1.6 17.1 0.7 20.0M37.9 2.7Q32.2 5.4 36.7 9.8Q30.6 11.4 34.2 16.7Q27.9 17.1 30.3 22.9Q24.1 22.1 25.4 28.2Q19.4 26.3 19.6 32.6Q14.1 29.5 13.0 35.7Q8.2 31.6 5.9 37.5Q3.1 32.5 1.3 38.0M57.9 4.0Q49.2 8.2 56.0 15.0Q46.7 17.5 52.1 25.4Q42.5 26.1 46.3 34.9Q36.8 33.7 38.8 43.1Q29.7 40.1 29.9 49.7Q21.5 45.0 19.8 54.5Q12.5 48.3 9.1 57.3Q4.8 49.7 2.0 58.0M79.8 5.6Q67.9 11.4 77.3 20.7Q64.4 24.1 71.9 35.1Q58.7 35.9 63.9 48.1Q50.7 46.5 53.5 59.5Q40.9 55.3 41.2 68.6Q29.6 62.1 27.4 75.2Q17.2 66.6 12.5 79.0Q6.6 68.5 2.8 80.0M103.7 7.3Q88.2 14.8 100.5 26.9Q83.8 31.3 93.5 45.6Q76.3 46.7 83.1 62.6Q65.9 60.4 69.6 77.3Q53.2 71.9 53.6 89.1Q38.5 80.7 35.6 97.7Q22.4 86.6 16.3 102.7Q8.6 89.0 3.6 103.9M129.7 9.1Q110.3 18.5 125.6 33.6Q104.7 39.2 116.8 57.0Q95.3 58.4 103.8 78.2Q82.4 75.5 87.0 96.6Q66.5 89.9 67.0 111.4Q48.1 100.9 44.5 122.2Q28.0 108.2 20.3 128.4Q10.7 111.3 4.5 129.9M157.6 11.0Q134.0 22.4 152.6 40.9Q127.3 47.6 142.0 69.3Q115.9 71.0 126.2 95.1Q100.2 91.8 105.7 117.4Q80.8 109.2 81.4 135.4Q58.5 122.6 54.0 148.5Q34.0 131.6 24.7 156.1Q13.0 135.3 5.5 157.9M185.5 13.0Q157.8 26.4 179.7 48.1Q149.8 56.0 167.2 81.5Q136.4 83.6 148.5 111.9Q117.9 108.1 124.5 138.2Q95.1 128.6 95.8 159.4Q68.9 144.4 63.6 174.8Q40.1 154.9 29.1 183.7Q15.3 159.2 6.5 185.9"
-          />
-          <!-- Hilo con una arañita colgando de un cruce de la tela -->
-          <path class="telarana__hilo" d="M69.6 77.3V147.3" />
-          <circle class="telarana__arana" cx="69.6" cy="151.3" r="4" />
-        </svg>
-      </template>
+      <!-- Halloween: guirnalda de telarañas en el borde de arriba (solo en temporada) -->
+      <GuirnaldaTelaranas v-if="esHalloween" />
 
       <div class="contenedor portada__rejilla">
         <div class="portada__texto">
@@ -269,45 +257,6 @@ const microfono = [
 
 .flotante--halloween:hover {
   border-color: #f0a052;
-}
-
-.telarana {
-  position: absolute;
-  top: var(--alto-cabecera);
-  left: 0;
-  width: 17rem;
-  height: 17rem;
-  fill: none;
-  stroke: rgb(255 243 224 / 0.3);
-  stroke-width: 0.7;
-  pointer-events: none;
-}
-
-.telarana__radios {
-  stroke: rgb(255 243 224 / 0.38);
-  stroke-width: 0.9;
-}
-
-.telarana__hilo {
-  stroke-width: 0.5;
-}
-
-.telarana__arana {
-  fill: #1c140c;
-  stroke: rgb(240 160 82 / 0.7);
-  stroke-width: 1;
-  transform-origin: 69.6px 77.3px;
-  animation: colgar 4s ease-in-out infinite;
-}
-
-@keyframes colgar {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 .insignia svg,
@@ -594,11 +543,6 @@ const microfono = [
 
   .datos dd {
     font-size: 0.7rem;
-  }
-
-  .telarana {
-    width: 9rem;
-    height: 9rem;
   }
 
   .insignia--halloween {
