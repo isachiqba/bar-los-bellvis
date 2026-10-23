@@ -1,6 +1,6 @@
 <script setup>
-// Ambiente sonoro de Halloween generado en el navegador (Web Audio, sin archivos):
-// una puerta vieja que chirría y murciélagos que pasan volando con sus chillidos.
+// Ambiente sonoro de Halloween con Web Audio: murciélagos generados en el navegador y la grabación
+// de un fantasma que suena de vez en cuando.
 // Empieza siempre en silencio: suena solo si el visitante lo activa con el botón.
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { esHalloween } from '../halloween'
@@ -23,65 +23,32 @@ function ruido(segundos) {
   return buffer
 }
 
-// Puerta que chirría: la bisagra roza a tirones cientos de veces por segundo, lo que da un
-// chirrido agudo y afinado ("iiiieeec") que sube y baja de tono mientras gira la puerta.
-// La fricción no es regular: hay pequeños saltos y temblores que le dan el carácter de bisagra vieja.
-function puerta() {
-  const ahora = ctx.currentTime
-  const dura = azar(1.2, 1.9)
-  const sr = ctx.sampleRate
-  const buffer = ctx.createBuffer(1, Math.ceil(sr * dura), sr)
-  const datos = buffer.getChannelData(0)
-  const base = azar(380, 520) // tono de partida del chirrido (Hz)
-  const subida = azar(0.6, 1.1) // cuánto sube de tono a mitad del giro
-  const temblor = azar(22, 34) // tirones de la fricción por segundo
-  let fase = 0
-  let tono = 1
-  for (let i = 0; i < datos.length; i++) {
-    const t = i / sr
-    const u = i / datos.length
-    // De vez en cuando la bisagra "salta" y el tono cambia un poco de golpe
-    if (Math.random() < 0.0004) tono = azar(0.85, 1.15)
-    const ritmo = base * tono * (1 + subida * Math.sin(Math.PI * u)) * (1 + 0.03 * Math.sin(t * 37))
-    fase += ritmo / sr
-    if (fase >= 1) {
-      fase -= 1
-      // Intensidad que tiembla con los tirones de la fricción
-      const fuerza = (0.35 + 0.65 * Math.abs(Math.sin(Math.PI * temblor * t))) * azar(0.8, 1)
-      for (let k = 0; k < 10 && i + k < datos.length; k++) {
-        datos[i + k] += fuerza * Math.exp(-k / 2.5) * (k % 2 ? -1 : 1)
-      }
-    }
+// Fantasma: un "uuuuuu" de 5 s grabado (public/halloween/fantasma.wav). El archivo se descarga
+// solo cuando el visitante enciende el sonido, para no hacer más lenta la web
+const NIVEL_FANTASMA = 0.4 // la grabación es mucho más fuerte que los murciélagos
+let grabacionFantasma = null
+
+async function cargarFantasma() {
+  try {
+    const respuesta = await fetch('/halloween/fantasma.wav')
+    grabacionFantasma = await ctx.decodeAudioData(await respuesta.arrayBuffer())
+  } catch {
+    // Si no se puede cargar, siguen sonando los murciélagos
   }
+}
+
+function fantasma() {
+  if (!grabacionFantasma) return
   const fuente = ctx.createBufferSource()
-  fuente.buffer = buffer
-  // Sin graves (eran los que daban el sonido de eructo) y con el brillo del metal
-  const sinGraves = ctx.createBiquadFilter()
-  sinGraves.type = 'highpass'
-  sinGraves.frequency.value = 600
-  const brillo = ctx.createBiquadFilter()
-  brillo.type = 'peaking'
-  brillo.frequency.value = azar(1600, 2200)
-  brillo.Q.value = 2
-  brillo.gain.value = 8
-  const suave = ctx.createBiquadFilter()
-  suave.type = 'lowpass'
-  suave.frequency.value = 5000
-  const env = ctx.createGain()
-  env.gain.setValueAtTime(0, ahora)
-  env.gain.linearRampToValueAtTime(3.2, ahora + 0.08)
-  env.gain.setValueAtTime(3.2, ahora + dura - 0.25)
-  env.gain.linearRampToValueAtTime(0, ahora + dura)
+  fuente.buffer = grabacionFantasma
+  // Cada vez un poco distinto: algo más agudo o grave y desde otro lado
+  fuente.playbackRate.value = azar(0.92, 1.06)
+  const volumen = ctx.createGain()
+  volumen.gain.value = NIVEL_FANTASMA
   const panorama = ctx.createStereoPanner()
-  panorama.pan.value = azar(-0.5, 0.5)
-  fuente
-    .connect(sinGraves)
-    .connect(brillo)
-    .connect(suave)
-    .connect(env)
-    .connect(panorama)
-    .connect(salida)
-  fuente.start(ahora)
+  panorama.pan.value = azar(-0.6, 0.6)
+  fuente.connect(volumen).connect(panorama).connect(salida)
+  fuente.start()
 }
 
 // Murciélagos: uno o dos pasan volando de un lado al otro, con aleteos y chillidos agudos
@@ -157,8 +124,9 @@ function crearAudio() {
   salida = ctx.createGain()
   salida.gain.value = 0
   salida.connect(ctx.destination)
+  cargarFantasma()
   programar(murcielagos, 7, 14)
-  programar(puerta, 14, 26)
+  programar(fantasma, 16, 28)
 }
 
 async function encender() {
@@ -171,7 +139,7 @@ async function encender() {
   // Primeros sonidos enseguida, para que se note que se ha encendido
   temporizadores.push(
     setTimeout(() => activo.value && murcielagos(), 400),
-    setTimeout(() => activo.value && puerta(), 3200),
+    setTimeout(() => activo.value && fantasma(), 2500),
   )
 }
 
