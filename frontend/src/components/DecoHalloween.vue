@@ -16,37 +16,46 @@ const murcielagos = [
   { top: 26, tam: 74, retraso: 3.6, duracion: 11, alReves: false },
 ]
 
-// Salen cada vez que se carga la página, al segundo de entrar
+// Salen al segundo de entrar y vuelven a pasar mientras se está en la página
+const DURACION_VUELO = 15500 // lo que tarda el último murciélago en cruzar
+const CADA = 40000 // un vuelo cada 40 s (unos 25 s de pausa entre vuelos)
+let intervalo = null
+
+function vuelo() {
+  if (document.hidden) return // con la pestaña en segundo plano no se anima
+  volando.value = true
+  temporizadores.push(setTimeout(() => (volando.value = false), DURACION_VUELO))
+}
+
 onMounted(() => {
   if (!activo || sinMovimiento) return
-  temporizadores.push(
-    setTimeout(() => (volando.value = true), 900),
-    setTimeout(() => (volando.value = false), 900 + 15500),
-  )
+  temporizadores.push(setTimeout(vuelo, 900))
+  intervalo = setInterval(vuelo, CADA)
 })
 
-onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
+onBeforeUnmount(() => {
+  temporizadores.forEach(clearTimeout)
+  clearInterval(intervalo)
+})
 </script>
 
 <template>
-  <template v-if="activo">
-    <div v-if="volando" class="murcielagos" aria-hidden="true">
-      <img
-        v-for="(m, i) in murcielagos"
-        :key="i"
-        src="/halloween/murcielago.webp"
-        alt=""
-        class="murcielago"
-        :class="{ 'murcielago--reves': m.alReves }"
-        :style="{
-          top: `${m.top}%`,
-          width: `${m.tam}px`,
-          animationDelay: `${m.retraso}s`,
-          animationDuration: `${m.duracion}s`,
-        }"
-      />
-    </div>
-  </template>
+  <div v-if="activo && volando" class="murcielagos" aria-hidden="true">
+    <img
+      v-for="(m, i) in murcielagos"
+      :key="i"
+      src="/halloween/murcielago.webp"
+      alt=""
+      class="murcielago"
+      :class="{ 'murcielago--reves': m.alReves }"
+      :style="{
+        top: `${m.top}%`,
+        width: `${m.tam}px`,
+        animationDelay: `${m.retraso}s`,
+        animationDuration: `${m.duracion}s`,
+      }"
+    />
+  </div>
 </template>
 
 <style scoped>
