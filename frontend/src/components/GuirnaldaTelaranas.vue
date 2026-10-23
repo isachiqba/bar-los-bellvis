@@ -1,6 +1,6 @@
 <script setup>
 // Guirnalda de Halloween para el borde superior de la portada: hilos combados que se repiten
-// a lo ancho, telarañas en las dos esquinas e hilos colgando con pequeños colgantes dorados.
+// a lo ancho, telarañas en las dos esquinas e hilos colgando con arañitas colgando.
 
 const ANCHO = 320 // ancho del tramo que se repite
 const curva = (y0, combado) => (x) => {
@@ -30,14 +30,24 @@ const nudo = [10, 25, 40, 55]
   })
   .join('')
 
-// Hilos que cuelgan: posición, largo y adorno
+// Hilos que cuelgan: posición, largo y tamaño de la araña
 const colgantes = [
-  { x: 55, largo: 62, adorno: 'rombo' },
-  { x: 108, largo: 34, adorno: 'gota' },
-  { x: 168, largo: 92, adorno: 'rombo' },
-  { x: 222, largo: 46, adorno: 'gota' },
-  { x: 276, largo: 74, adorno: 'rombo' },
+  { x: 55, largo: 62, tam: 1 },
+  { x: 108, largo: 34, tam: 0.7 },
+  { x: 168, largo: 58, tam: 1.2 },
+  { x: 222, largo: 46, tam: 0.8 },
+  { x: 276, largo: 74, tam: 1 },
 ].map((c) => ({ ...c, y: hilo2(c.x) }))
+
+// Arañita dibujada con el extremo del hilo en (0, 0): patas (4 por lado), cabeza y abdomen
+const patas = [
+  'M-1.6 4.2q-3.5-3.2-6.2-2.2',
+  'M-1.9 5.4q-4-1.4-6.8.6',
+  'M-1.9 6.6q-4 .8-6.2 4.4',
+  'M-1.6 7.6q-3 2.6-4.2 6.6',
+]
+const patasAranita = patas.join('') // el otro lado es el mismo trazo reflejado
+const transformAranita = (c) => `translate(${c.x} ${(c.y + c.largo).toFixed(1)}) scale(${c.tam})`
 
 // Telaraña de esquina (se dibuja para la izquierda y se refleja para la derecha)
 const angulos = [6, 22, 38, 54, 70, 84]
@@ -64,8 +74,8 @@ const vueltasEsquina = vueltas
   )
   .join('')
 const colgantesEsquina = [
-  { x: 40, y: 58, largo: 70, adorno: 'rombo' },
-  { x: 78, y: 44, largo: 40, adorno: 'gota' },
+  { x: 40, y: 58, largo: 70, tam: 1.1 },
+  { x: 78, y: 44, largo: 40, tam: 0.8 },
 ]
 </script>
 
@@ -79,12 +89,12 @@ const colgantesEsquina = [
           <path class="fino" :d="cruces + nudo" />
           <g v-for="c in colgantes" :key="c.x" class="colgante">
             <path class="fino" :d="`M${c.x} ${c.y.toFixed(1)}V${(c.y + c.largo).toFixed(1)}`" />
-            <path
-              v-if="c.adorno === 'rombo'"
-              class="adorno"
-              :d="`M${c.x} ${c.y + c.largo}l3 5-3 5-3-5z`"
-            />
-            <circle v-else class="adorno" :cx="c.x" :cy="c.y + c.largo + 2.5" r="2.2" />
+            <g class="aranita" :transform="transformAranita(c)">
+              <path class="aranita__patas" :d="patasAranita" />
+              <path class="aranita__patas" :d="patasAranita" transform="scale(-1 1)" />
+              <circle class="aranita__cuerpo" cy="3" r="2" />
+              <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
+            </g>
           </g>
         </pattern>
       </defs>
@@ -102,12 +112,12 @@ const colgantesEsquina = [
       <path class="fino" :d="vueltasEsquina" />
       <g v-for="c in colgantesEsquina" :key="c.x">
         <path class="fino" :d="`M${c.x} ${c.y}V${c.y + c.largo}`" />
-        <path
-          v-if="c.adorno === 'rombo'"
-          class="adorno"
-          :d="`M${c.x} ${c.y + c.largo}l3 5-3 5-3-5z`"
-        />
-        <circle v-else class="adorno" :cx="c.x" :cy="c.y + c.largo + 2.5" r="2.2" />
+        <g class="aranita" :transform="transformAranita(c)">
+          <path class="aranita__patas" :d="patasAranita" />
+          <path class="aranita__patas" :d="patasAranita" transform="scale(-1 1)" />
+          <circle class="aranita__cuerpo" cy="3" r="2" />
+          <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
+        </g>
       </g>
     </svg>
   </div>
@@ -137,10 +147,20 @@ svg {
   stroke-width: 0.7;
 }
 
-.adorno {
-  fill: #e0b85a;
-  stroke: none;
-  filter: drop-shadow(0 0 3px rgb(240 190 90 / 0.8));
+.aranita__patas {
+  stroke: rgb(224 184 90 / 0.85);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+
+.aranita__cuerpo {
+  fill: #1c140c;
+  stroke: #e0b85a;
+  stroke-width: 0.8;
+}
+
+.aranita {
+  filter: drop-shadow(0 0 2px rgb(240 190 90 / 0.6));
 }
 
 .guirnalda__tira {
