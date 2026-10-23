@@ -64,12 +64,19 @@ const microfono = [
       />
       <div class="portada__velo"></div>
 
-      <!-- Halloween: luna suave y telaraña fina en la esquina (solo en temporada) -->
+      <!-- Halloween: telaraña en la esquina (solo en temporada) -->
       <template v-if="esHalloween">
-        <div class="luna" aria-hidden="true"></div>
-        <svg class="telarana" viewBox="0 0 120 120" aria-hidden="true">
-          <path d="M0 0 120 120M0 0 60 120M0 0 120 60M0 0 0 120M0 0 120 0" />
-          <path d="M0 30q14 -2 21 -9t9 -21M0 60q28 -4 42 -18t18 -42M0 92q42 -6 64 -28t28 -64" />
+        <svg class="telarana" viewBox="0 0 200 200" aria-hidden="true">
+          <path
+            class="telarana__radios"
+            d="M0 0L200.0 0.0M0 0L196.3 38.2M0 0L184.1 78.1M0 0L163.8 114.7M0 0L136.4 146.3M0 0L103.0 171.4M0 0L65.1 189.1M0 0L24.4 198.5M0 0L0.0 200.0"
+          />
+          <path
+            d="M22.0 0.0Q18.8 1.8 21.6 4.2Q18.1 5.5 20.3 8.6Q16.5 9.2 18.0 12.6Q14.3 12.4 15.0 16.1Q11.4 15.1 11.3 18.9Q8.0 17.1 7.2 20.8Q4.3 18.4 2.7 21.8Q1.2 18.9 0.0 22.0M40.0 0.0Q34.2 3.3 39.3 7.6Q32.9 10.1 36.8 15.6Q30.1 16.7 32.8 22.9Q26.0 22.6 27.3 29.3Q20.7 27.5 20.6 34.3Q14.5 31.2 13.0 37.8Q7.7 33.5 4.9 39.7Q2.1 34.3 0.0 40.0M60.0 0.0Q51.4 4.9 58.9 11.4Q49.3 15.1 55.2 23.4Q45.1 25.0 49.1 34.4Q38.9 33.9 40.9 43.9Q31.1 41.2 30.9 51.4Q21.8 46.8 19.5 56.7Q11.6 50.3 7.3 59.6Q3.2 51.5 0.0 60.0M82.0 0.0Q70.2 6.8 80.5 15.6Q67.4 20.6 75.5 32.0Q61.7 34.2 67.2 47.0Q53.2 46.3 55.9 60.0Q42.4 56.3 42.2 70.3Q29.8 63.9 26.7 77.5Q15.9 68.7 10.0 81.4Q4.3 70.4 0.0 82.0M106.0 0.0Q90.7 8.7 104.1 20.2Q87.2 26.7 97.6 41.4Q79.7 44.2 86.8 60.8Q68.8 59.8 72.3 77.5Q54.9 72.8 54.6 90.9Q38.5 82.6 34.5 100.2Q20.5 88.8 12.9 105.2Q5.6 91.0 0.0 106.0M132.0 0.0Q113.0 10.9 129.6 25.2Q108.6 33.2 121.5 51.6Q99.3 55.0 108.1 75.7Q85.7 74.5 90.0 96.5Q68.3 90.7 68.0 113.1Q48.0 102.9 43.0 124.8Q25.5 110.6 16.1 131.0Q6.9 113.3 0.0 132.0M160.0 0.0Q137.0 13.2 157.1 30.5Q131.6 40.2 147.3 62.5Q120.3 66.7 131.1 91.8Q103.8 90.3 109.1 117.0Q82.8 109.9 82.4 137.1Q58.2 124.7 52.1 151.3Q31.0 134.1 19.5 158.8Q8.4 137.3 0.0 160.0M188.0 0.0Q160.9 15.5 184.5 35.9Q154.6 47.3 173.1 73.5Q141.4 78.4 154.0 107.8Q122.0 106.1 128.2 137.5Q97.3 129.1 96.8 161.1Q68.3 146.5 61.2 177.8Q36.4 157.5 22.9 186.6Q9.9 161.4 0.0 188.0"
+          />
+          <!-- Hilo suelto con una arañita colgando -->
+          <path class="telarana__hilo" d="M128 96V176" />
+          <circle class="telarana__arana" cx="128" cy="180" r="4" />
         </svg>
       </template>
 
@@ -264,33 +271,43 @@ const microfono = [
   border-color: #f0a052;
 }
 
-.luna {
-  position: absolute;
-  top: 14%;
-  left: 47%;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
-  /* Luna creciente: solo se ve la sombra interior */
-  box-shadow:
-    inset -14px 8px 0 0 #f3dca0,
-    -6px 4px 30px -4px rgb(255 230 170 / 0.35),
-    0 0 90px 30px rgb(124 77 160 / 0.18);
-  transform: rotate(-20deg);
-  opacity: 0.8;
-  pointer-events: none;
-}
-
 .telarana {
   position: absolute;
   top: var(--alto-cabecera);
   left: 0;
-  width: 9rem;
-  height: 9rem;
+  width: 17rem;
+  height: 17rem;
   fill: none;
-  stroke: rgb(255 243 224 / 0.18);
-  stroke-width: 0.6;
+  stroke: rgb(255 243 224 / 0.3);
+  stroke-width: 0.7;
   pointer-events: none;
+}
+
+.telarana__radios {
+  stroke: rgb(255 243 224 / 0.38);
+  stroke-width: 0.9;
+}
+
+.telarana__hilo {
+  stroke-width: 0.5;
+}
+
+.telarana__arana {
+  fill: #1c140c;
+  stroke: rgb(240 160 82 / 0.7);
+  stroke-width: 1;
+  transform-origin: 128px 96px;
+  animation: colgar 4s ease-in-out infinite;
+}
+
+@keyframes colgar {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .insignia svg,
@@ -579,13 +596,9 @@ const microfono = [
     font-size: 0.7rem;
   }
 
-  .luna {
-    display: none;
-  }
-
   .telarana {
-    width: 5.5rem;
-    height: 5.5rem;
+    width: 9rem;
+    height: 9rem;
   }
 
   .insignia--halloween {

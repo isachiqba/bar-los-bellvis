@@ -12,11 +12,11 @@ let temporizadores = []
 
 // Cada murciélago: altura de salida, tamaño, retraso, duración y dirección
 const murcielagos = [
-  { top: 18, tam: 84, retraso: 0, duracion: 9, alReves: false },
-  { top: 34, tam: 58, retraso: 1, duracion: 10, alReves: false },
-  { top: 10, tam: 46, retraso: 2, duracion: 10.5, alReves: true },
-  { top: 48, tam: 66, retraso: 2.8, duracion: 9.5, alReves: true },
-  { top: 26, tam: 38, retraso: 3.6, duracion: 11, alReves: false },
+  { top: 18, tam: 160, retraso: 0, duracion: 9, alReves: false },
+  { top: 34, tam: 112, retraso: 1, duracion: 10, alReves: false },
+  { top: 10, tam: 86, retraso: 2, duracion: 10.5, alReves: true },
+  { top: 48, tam: 128, retraso: 2.8, duracion: 9.5, alReves: true },
+  { top: 26, tam: 74, retraso: 3.6, duracion: 11, alReves: false },
 ]
 
 function soltarMurcielagos() {
@@ -51,9 +51,11 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
 <template>
   <template v-if="activo">
     <div v-if="volando" :key="vuelo" class="murcielagos" aria-hidden="true">
-      <svg
+      <img
         v-for="(m, i) in murcielagos"
         :key="i"
+        src="/halloween/murcielago.webp"
+        alt=""
         class="murcielago"
         :class="{ 'murcielago--reves': m.alReves }"
         :style="{
@@ -62,14 +64,7 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
           animationDelay: `${m.retraso}s`,
           animationDuration: `${m.duracion}s`,
         }"
-        viewBox="0 0 100 60"
-      >
-        <!-- Silueta: orejas, cuerpo y alas en punta con el borde festoneado -->
-        <path
-          class="murcielago__alas"
-          d="M50 22 46 13 44 21C36 14 22 6 2 8c9 5 13 12 13 20-4-3-9-4-14-2 6 3 10 8 11 15 6-6 14-7 21-3 4 3 8 8 11 13 2 2 4 3 6 3s4-1 6-3c3-5 7-10 11-13 7-4 15-3 21 3 1-7 5-12 11-15-5-2-10-1-14 2 0-8 4-15 13-20-20-2-34 6-42 13l-2-8-4 9z"
-        />
-      </svg>
+      />
     </div>
 
     <div class="calabaza-caja">
@@ -107,28 +102,22 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
   left: 0;
   height: auto;
   opacity: 0;
-  filter: drop-shadow(0 0 8px rgb(212 168 67 / 0.55));
-  animation: cruzar linear forwards;
+  filter: drop-shadow(0 0 10px rgb(255 170 60 / 0.35));
+  animation:
+    cruzar linear forwards,
+    aletear 0.6s ease-in-out infinite alternate;
 }
 
 .murcielago--reves {
-  animation-name: cruzar-reves;
-}
-
-.murcielago__alas {
-  fill: #1c140c;
-  stroke: rgb(240 201 106 / 0.85);
-  stroke-width: 0.9;
-  transform-origin: 50px 26px;
-  animation: aletear 0.3s ease-in-out infinite alternate;
+  animation-name: cruzar-reves, aletear;
 }
 
 @keyframes aletear {
   from {
-    transform: scaleY(1);
+    scale: 1 1;
   }
   to {
-    transform: scaleY(0.55);
+    scale: 1 0.85;
   }
 }
 
