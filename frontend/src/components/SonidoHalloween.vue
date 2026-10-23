@@ -16,13 +16,6 @@ let temporizadores = []
 
 const azar = (min, max) => min + Math.random() * (max - min)
 
-function ruido(segundos) {
-  const buffer = ctx.createBuffer(1, ctx.sampleRate * segundos, ctx.sampleRate)
-  const datos = buffer.getChannelData(0)
-  for (let i = 0; i < datos.length; i++) datos[i] = Math.random() * 2 - 1
-  return buffer
-}
-
 // Fantasma: un "uuuuuu" de 5 s grabado (public/halloween/fantasma.wav). El archivo se descarga
 // solo cuando el visitante enciende el sonido, para no hacer más lenta la web
 const NIVEL_FANTASMA = 0.6 // la grabación es mucho más fuerte que los murciélagos
@@ -51,7 +44,7 @@ function fantasma() {
   fuente.start()
 }
 
-// Murciélagos: uno o dos pasan volando de un lado al otro, con aleteos y chillidos agudos
+// Murciélagos: pasan volando de un lado al otro soltando ráfagas de chillidos agudos
 function murcielagos() {
   const ahora = ctx.currentTime
   const vuelo = azar(1.6, 2.6)
@@ -66,30 +59,11 @@ function murcielagos() {
   cerca.gain.linearRampToValueAtTime(0.25, ahora + vuelo)
   cerca.connect(panorama).connect(salida)
 
-  // Aleteos: golpes graves y cortos de aire, unas 9 veces por segundo
-  const aire = ruido(0.1)
-  const cadencia = azar(0.1, 0.13)
-  for (let t = 0; t < vuelo; t += cadencia * azar(0.9, 1.1)) {
-    const inicio = ahora + t
-    const golpe = ctx.createBufferSource()
-    golpe.buffer = aire
-    const filtro = ctx.createBiquadFilter()
-    filtro.type = 'lowpass'
-    filtro.frequency.value = azar(380, 600)
-    const env = ctx.createGain()
-    env.gain.setValueAtTime(0, inicio)
-    env.gain.linearRampToValueAtTime(1.6, inicio + 0.015)
-    env.gain.exponentialRampToValueAtTime(0.001, inicio + 0.07)
-    golpe.connect(filtro).connect(env).connect(cerca)
-    golpe.start(inicio)
-    golpe.stop(inicio + 0.08)
-  }
-
   // Chillidos: ráfagas de chirridos agudos que bajan de tono
-  const rafagas = Math.round(azar(2, 4))
+  const rafagas = Math.round(azar(4, 7))
   for (let r = 0; r < rafagas; r++) {
     let inicio = ahora + azar(0.1, vuelo - 0.4)
-    const chirridos = Math.round(azar(3, 7))
+    const chirridos = Math.round(azar(4, 9))
     for (let c = 0; c < chirridos; c++) {
       const osc = ctx.createOscillator()
       osc.type = 'triangle'
@@ -97,7 +71,7 @@ function murcielagos() {
       osc.frequency.exponentialRampToValueAtTime(azar(2400, 3000), inicio + 0.03)
       const env = ctx.createGain()
       env.gain.setValueAtTime(0, inicio)
-      env.gain.linearRampToValueAtTime(0.55, inicio + 0.004)
+      env.gain.linearRampToValueAtTime(1, inicio + 0.004)
       env.gain.exponentialRampToValueAtTime(0.0001, inicio + 0.04)
       osc.connect(env).connect(cerca)
       osc.start(inicio)
@@ -105,6 +79,12 @@ function murcielagos() {
       inicio += azar(0.035, 0.06)
     }
   }
+}
+
+// Dos murciélagos casi a la vez, como si se persiguieran
+function murcielagosPareja() {
+  murcielagos()
+  temporizadores.push(setTimeout(() => activo.value && murcielagos(), azar(250, 600)))
 }
 
 // Repite un sonido a intervalos irregulares mientras esté activo
@@ -125,8 +105,9 @@ function crearAudio() {
   salida.gain.value = 0
   salida.connect(ctx.destination)
   cargarFantasma()
-  programar(murcielagos, 7, 14)
-  programar(fantasma, 16, 28)
+  programar(murcielagos, 3, 7)
+  programar(murcielagosPareja, 9, 16)
+  programar(fantasma, 7, 12)
 }
 
 // iPhone: con el interruptor de silencio activado, Web Audio no suena aunque el volumen esté alto.
@@ -178,8 +159,8 @@ async function encender() {
   activo.value = true
   // Primeros sonidos enseguida, para que se note que se ha encendido
   temporizadores.push(
-    setTimeout(() => activo.value && murcielagos(), 400),
-    setTimeout(() => activo.value && fantasma(), 2500),
+    setTimeout(() => activo.value && murcielagos(), 300),
+    setTimeout(() => activo.value && fantasma(), 1000),
   )
 }
 
