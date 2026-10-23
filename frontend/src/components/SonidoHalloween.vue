@@ -1,6 +1,6 @@
 <script setup>
 // Ambiente sonoro de Halloween generado en el navegador (Web Audio, sin archivos):
-// viento de fondo, chillidos lejanos de murciélago y algún crujido de madera.
+// una puerta vieja que chirría y murciélagos que pasan volando con sus chillidos.
 // Empieza siempre en silencio: suena solo si el visitante lo activa con el botón.
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { esHalloween } from '../halloween'
@@ -23,84 +23,116 @@ function ruido(segundos) {
   return buffer
 }
 
-// Viento: ruido filtrado cuyo filtro y volumen suben y bajan despacio
-function viento() {
-  const fuente = ctx.createBufferSource()
-  fuente.buffer = ruido(4)
-  fuente.loop = true
-  const filtro = ctx.createBiquadFilter()
-  filtro.type = 'bandpass'
-  filtro.frequency.value = 420
-  filtro.Q.value = 0.8
-  const volumen = ctx.createGain()
-  volumen.gain.value = 0.22
-
-  // Ráfagas: osciladores muy lentos que mueven el filtro y el volumen
-  const lfoFiltro = ctx.createOscillator()
-  lfoFiltro.frequency.value = 0.07
-  const profundidadFiltro = ctx.createGain()
-  profundidadFiltro.gain.value = 260
-  lfoFiltro.connect(profundidadFiltro).connect(filtro.frequency)
-  const lfoVolumen = ctx.createOscillator()
-  lfoVolumen.frequency.value = 0.11
-  const profundidadVolumen = ctx.createGain()
-  profundidadVolumen.gain.value = 0.12
-  lfoVolumen.connect(profundidadVolumen).connect(volumen.gain)
-
-  fuente.connect(filtro).connect(volumen).connect(salida)
-  fuente.start()
-  lfoFiltro.start()
-  lfoVolumen.start()
-}
-
-// Murciélago: dos o tres chirridos agudos muy cortos, lejanos
-function murcielago() {
+// Puerta que chirría: la bisagra roza a tirones (fricción a golpes muy seguidos) y la madera
+// resuena. Los golpes se aceleran y frenan durante el giro: "iiiieeeec"
+function puerta() {
   const ahora = ctx.currentTime
-  const veces = Math.round(azar(2, 3))
-  const panorama = ctx.createStereoPanner()
-  panorama.pan.value = azar(-0.8, 0.8)
-  panorama.connect(salida)
-  for (let i = 0; i < veces; i++) {
-    const inicio = ahora + i * azar(0.09, 0.14)
-    const osc = ctx.createOscillator()
-    osc.type = 'sine'
-    osc.frequency.setValueAtTime(azar(5200, 6500), inicio)
-    osc.frequency.exponentialRampToValueAtTime(azar(3200, 3800), inicio + 0.05)
-    const env = ctx.createGain()
-    env.gain.setValueAtTime(0, inicio)
-    env.gain.linearRampToValueAtTime(0.05, inicio + 0.008)
-    env.gain.exponentialRampToValueAtTime(0.0001, inicio + 0.06)
-    osc.connect(env).connect(panorama)
-    osc.start(inicio)
-    osc.stop(inicio + 0.07)
+  const dura = azar(1.3, 2.2)
+  const sr = ctx.sampleRate
+  const buffer = ctx.createBuffer(1, Math.ceil(sr * dura), sr)
+  const datos = buffer.getChannelData(0)
+  const base = azar(16, 24)
+  const subida = azar(1.2, 2)
+  let fase = 0
+  for (let i = 0; i < datos.length; i++) {
+    const u = i / datos.length
+    // Ritmo de los tirones: sube en mitad del giro y baja al final, con algo de irregularidad
+    const ritmo =
+      base *
+      (1 + subida * Math.sin(Math.PI * Math.min(1, u * 1.15))) *
+      (1 + 0.08 * Math.sin(i / 900))
+    fase += ritmo / sr
+    if (fase >= 1) {
+      fase -= 1
+      const fuerza = azar(0.6, 1)
+      // Cada tirón es un chasquido corto de ruido que se apaga enseguida
+      for (let k = 0; k < 60 && i + k < datos.length; k++) {
+        datos[i + k] += fuerza * (Math.random() * 2 - 1) * Math.exp(-k / 9)
+      }
+    }
   }
-}
-
-// Crujido de madera: tono grave que tiembla, como una puerta o una viga vieja
-function crujido() {
-  const ahora = ctx.currentTime
-  const dura = azar(0.6, 1.1)
-  const osc = ctx.createOscillator()
-  osc.type = 'sawtooth'
-  osc.frequency.setValueAtTime(azar(70, 95), ahora)
-  osc.frequency.linearRampToValueAtTime(azar(110, 140), ahora + dura)
-  const temblor = ctx.createOscillator()
-  temblor.frequency.value = azar(18, 26)
-  const profundidad = ctx.createGain()
-  profundidad.gain.value = 9
-  temblor.connect(profundidad).connect(osc.frequency)
-  const filtro = ctx.createBiquadFilter()
-  filtro.type = 'lowpass'
-  filtro.frequency.value = 700
+  const fuente = ctx.createBufferSource()
+  fuente.buffer = buffer
+  // Resonancias de la madera y del metal de la bisagra
+  const mezcla = ctx.createGain()
+  for (const [frecuencia, q, nivel] of [
+    [azar(480, 620), 14, 1],
+    [azar(1050, 1300), 16, 0.8],
+    [azar(2200, 2700), 12, 0.45],
+  ]) {
+    const filtro = ctx.createBiquadFilter()
+    filtro.type = 'bandpass'
+    filtro.frequency.value = frecuencia
+    filtro.Q.value = q
+    const g = ctx.createGain()
+    g.gain.value = nivel
+    fuente.connect(filtro).connect(g).connect(mezcla)
+  }
   const env = ctx.createGain()
   env.gain.setValueAtTime(0, ahora)
-  env.gain.linearRampToValueAtTime(0.05, ahora + 0.15)
+  env.gain.linearRampToValueAtTime(40, ahora + 0.12)
+  env.gain.setValueAtTime(40, ahora + dura - 0.35)
   env.gain.linearRampToValueAtTime(0, ahora + dura)
-  osc.connect(filtro).connect(env).connect(salida)
-  osc.start(ahora)
-  temblor.start(ahora)
-  osc.stop(ahora + dura + 0.05)
-  temblor.stop(ahora + dura + 0.05)
+  const panorama = ctx.createStereoPanner()
+  panorama.pan.value = azar(-0.5, 0.5)
+  mezcla.connect(env).connect(panorama).connect(salida)
+  fuente.start(ahora)
+}
+
+// Murciélagos: uno o dos pasan volando de un lado al otro, con aleteos y chillidos agudos
+function murcielagos() {
+  const ahora = ctx.currentTime
+  const vuelo = azar(1.6, 2.6)
+  const desde = Math.random() < 0.5 ? -0.9 : 0.9
+  const panorama = ctx.createStereoPanner()
+  panorama.pan.setValueAtTime(desde, ahora)
+  panorama.pan.linearRampToValueAtTime(-desde, ahora + vuelo)
+  // Más fuerte al pasar por el centro, como si se acercara y se alejara
+  const cerca = ctx.createGain()
+  cerca.gain.setValueAtTime(0.25, ahora)
+  cerca.gain.linearRampToValueAtTime(1, ahora + vuelo / 2)
+  cerca.gain.linearRampToValueAtTime(0.25, ahora + vuelo)
+  cerca.connect(panorama).connect(salida)
+
+  // Aleteos: golpes graves y cortos de aire, unas 9 veces por segundo
+  const aire = ruido(0.1)
+  const cadencia = azar(0.1, 0.13)
+  for (let t = 0; t < vuelo; t += cadencia * azar(0.9, 1.1)) {
+    const inicio = ahora + t
+    const golpe = ctx.createBufferSource()
+    golpe.buffer = aire
+    const filtro = ctx.createBiquadFilter()
+    filtro.type = 'lowpass'
+    filtro.frequency.value = azar(380, 600)
+    const env = ctx.createGain()
+    env.gain.setValueAtTime(0, inicio)
+    env.gain.linearRampToValueAtTime(1.6, inicio + 0.015)
+    env.gain.exponentialRampToValueAtTime(0.001, inicio + 0.07)
+    golpe.connect(filtro).connect(env).connect(cerca)
+    golpe.start(inicio)
+    golpe.stop(inicio + 0.08)
+  }
+
+  // Chillidos: ráfagas de chirridos agudos que bajan de tono
+  const rafagas = Math.round(azar(2, 4))
+  for (let r = 0; r < rafagas; r++) {
+    let inicio = ahora + azar(0.1, vuelo - 0.4)
+    const chirridos = Math.round(azar(3, 7))
+    for (let c = 0; c < chirridos; c++) {
+      const osc = ctx.createOscillator()
+      osc.type = 'triangle'
+      osc.frequency.setValueAtTime(azar(4200, 5600), inicio)
+      osc.frequency.exponentialRampToValueAtTime(azar(2400, 3000), inicio + 0.03)
+      const env = ctx.createGain()
+      env.gain.setValueAtTime(0, inicio)
+      env.gain.linearRampToValueAtTime(0.55, inicio + 0.004)
+      env.gain.exponentialRampToValueAtTime(0.0001, inicio + 0.04)
+      osc.connect(env).connect(cerca)
+      osc.start(inicio)
+      osc.stop(inicio + 0.05)
+      inicio += azar(0.035, 0.06)
+    }
+  }
 }
 
 // Repite un sonido a intervalos irregulares mientras esté activo
@@ -120,9 +152,8 @@ function crearAudio() {
   salida = ctx.createGain()
   salida.gain.value = 0
   salida.connect(ctx.destination)
-  viento()
-  programar(murcielago, 6, 14)
-  programar(crujido, 18, 35)
+  programar(murcielagos, 7, 14)
+  programar(puerta, 14, 26)
 }
 
 async function encender() {
@@ -130,8 +161,13 @@ async function encender() {
   await ctx.resume()
   // Entrada y salida suaves para que no dé un golpe de volumen
   salida.gain.cancelScheduledValues(ctx.currentTime)
-  salida.gain.setTargetAtTime(VOLUMEN, ctx.currentTime, 0.6)
+  salida.gain.setTargetAtTime(VOLUMEN, ctx.currentTime, 0.3)
   activo.value = true
+  // Primeros sonidos enseguida, para que se note que se ha encendido
+  temporizadores.push(
+    setTimeout(() => activo.value && murcielagos(), 400),
+    setTimeout(() => activo.value && puerta(), 3200),
+  )
 }
 
 function apagar() {
