@@ -2,6 +2,7 @@
 import { computed, reactive, watch } from 'vue'
 import { bar, horasReserva, mapaUrl, telefonoEnlace, whatsappUrl } from '../bar'
 import { idioma, t, tr } from '../i18n'
+import { icono } from '../halloween'
 
 const iconos = {
   direccion: [
@@ -100,7 +101,7 @@ function enviar() {
   <section id="visitanos" class="seccion seccion--alt">
     <div class="contenedor">
       <header v-reveal class="seccion__cabecera">
-        <p class="antetitulo">{{ t('visita.antetitulo') }}</p>
+        <p class="antetitulo">{{ t('visita.antetitulo') }}{{ icono('🕸️') }}</p>
         <h2>
           {{ t('visita.titulo')[0] }} <span class="dorado">{{ t('visita.titulo')[1] }}</span>
         </h2>

@@ -1,17 +1,9 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { esHalloween } from '../halloween'
 import { t } from '../i18n'
 
-// Solo en temporada (mes-día, ambos incluidos). Con ?halloween en la URL se fuerza para probar
-const TEMPORADA = { desde: '10-15', hasta: '11-01' }
-
-function enTemporada(fecha = new Date()) {
-  if (new URLSearchParams(window.location.search).has('halloween')) return true
-  const hoy = `${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`
-  return hoy >= TEMPORADA.desde && hoy <= TEMPORADA.hasta
-}
-
-const activo = enTemporada()
+const activo = esHalloween
 const sinMovimiento = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 const vuelo = ref(0) // cambia la key para repetir la animación
 const volando = ref(false)

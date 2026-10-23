@@ -1,6 +1,7 @@
 <script setup>
 import { bar, whatsappUrl } from '../bar'
 import { idioma, t, tr } from '../i18n'
+import { icono } from '../halloween'
 
 // Mensaje para WhatsApp: siempre en castellano, que es lo que lee el bar
 function enlaceInfo(servicio) {
@@ -48,7 +49,7 @@ const iconos = {
   <section id="servicios" class="seccion">
     <div class="contenedor">
       <header v-reveal class="seccion__cabecera">
-        <p class="antetitulo">{{ t('servicios.antetitulo') }}</p>
+        <p class="antetitulo">{{ t('servicios.antetitulo') }}{{ icono('👻') }}</p>
         <h2>
           {{ t('servicios.titulo')[0] }} <span class="dorado">{{ t('servicios.titulo')[1] }}</span>
         </h2>

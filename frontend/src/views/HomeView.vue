@@ -5,6 +5,7 @@ import SeccionGaleria from '../components/SeccionGaleria.vue'
 import SeccionServicios from '../components/SeccionServicios.vue'
 import SeccionVisita from '../components/SeccionVisita.vue'
 import { bar, estadoHoy } from '../bar'
+import { esHalloween } from '../halloween'
 import { localeIntl, t } from '../i18n'
 
 const hoy = estadoHoy()
@@ -63,9 +64,21 @@ const microfono = [
       />
       <div class="portada__velo"></div>
 
+      <!-- Halloween: luna suave y telaraña fina en la esquina (solo en temporada) -->
+      <template v-if="esHalloween">
+        <div class="luna" aria-hidden="true"></div>
+        <svg class="telarana" viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M0 0 120 120M0 0 60 120M0 0 120 60M0 0 0 120M0 0 120 0" />
+          <path d="M0 30q14 -2 21 -9t9 -21M0 60q28 -4 42 -18t18 -42M0 92q42 -6 64 -28t28 -64" />
+        </svg>
+      </template>
+
       <div class="contenedor portada__rejilla">
         <div class="portada__texto">
-          <p class="insignia entrada">
+          <p v-if="esHalloween" class="insignia insignia--halloween entrada">
+            🎃 {{ t('halloween.banner') }}
+          </p>
+          <p v-else class="insignia entrada">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path v-for="d in iconos.ubicacion" :key="d" :d="d" />
             </svg>
@@ -114,7 +127,15 @@ const microfono = [
             <img src="/fotos/destacado.jpg" :alt="t('portada.alt')" />
           </div>
 
-          <div class="flotante flotante--arriba">
+          <a
+            v-if="esHalloween"
+            href="#reservas"
+            class="flotante flotante--arriba flotante--halloween"
+          >
+            <p class="flotante__etiqueta">👻 {{ t('halloween.noche') }}</p>
+            <p class="flotante__texto">{{ t('halloween.celebrar') }} →</p>
+          </a>
+          <div v-else class="flotante flotante--arriba">
             <p class="flotante__etiqueta">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path v-for="d in microfono" :key="d" :d="d" />
@@ -218,6 +239,58 @@ const microfono = [
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+/* Halloween: toques naranja y morado sin cambiar el estilo del bar */
+.insignia--halloween {
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-color: rgb(224 122 31 / 0.5);
+  background: rgb(224 122 31 / 0.12);
+  color: #f0a052;
+}
+
+.flotante--halloween {
+  border-color: rgb(224 122 31 / 0.45);
+  color: var(--color-texto);
+}
+
+.flotante--halloween .flotante__etiqueta {
+  color: #f0a052;
+}
+
+.flotante--halloween:hover {
+  border-color: #f0a052;
+}
+
+.luna {
+  position: absolute;
+  top: 14%;
+  left: 47%;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  /* Luna creciente: solo se ve la sombra interior */
+  box-shadow:
+    inset -14px 8px 0 0 #f3dca0,
+    -6px 4px 30px -4px rgb(255 230 170 / 0.35),
+    0 0 90px 30px rgb(124 77 160 / 0.18);
+  transform: rotate(-20deg);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.telarana {
+  position: absolute;
+  top: var(--alto-cabecera);
+  left: 0;
+  width: 9rem;
+  height: 9rem;
+  fill: none;
+  stroke: rgb(255 243 224 / 0.18);
+  stroke-width: 0.6;
+  pointer-events: none;
 }
 
 .insignia svg,
@@ -504,6 +577,19 @@ const microfono = [
 
   .datos dd {
     font-size: 0.7rem;
+  }
+
+  .luna {
+    display: none;
+  }
+
+  .telarana {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+
+  .insignia--halloween {
+    font-size: 0.75rem;
   }
 
   /* Tarjetas flotantes más compactas en móvil */

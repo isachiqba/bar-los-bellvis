@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { campo, localeIntl, t } from '../i18n'
 import { urlDatos } from '../datos'
+import { icono } from '../halloween'
 
 const categorias = ref([])
 const activa = ref(null)
@@ -31,7 +32,7 @@ onMounted(async () => {
   <section id="carta" class="seccion seccion--alt">
     <div class="contenedor">
       <header v-reveal class="seccion__cabecera">
-        <p class="antetitulo">{{ t('carta.antetitulo') }}</p>
+        <p class="antetitulo">{{ t('carta.antetitulo') }}{{ icono('🎃') }}</p>
         <h2>
           {{ t('carta.titulo')[0] }} <span class="dorado">{{ t('carta.titulo')[1] }}</span>
           {{ t('carta.titulo')[2] }}
