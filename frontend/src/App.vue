@@ -1,6 +1,7 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterView } from 'vue-router'
+import DecoHalloween from './components/DecoHalloween.vue'
 import { bar, mapaUrl, telefonoEnlace } from './bar'
 import { idioma, idiomas, t, tr } from './i18n'
 
@@ -85,6 +86,8 @@ onBeforeUnmount(() => window.removeEventListener('scroll', alHacerScroll))
   </header>
 
   <RouterView />
+
+  <DecoHalloween />
 
   <footer class="pie">
     <div class="contenedor pie__rejilla">

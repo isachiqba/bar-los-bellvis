@@ -1,0 +1,295 @@
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { t } from '../i18n'
+
+// Solo en temporada (mes-día, ambos incluidos). Con ?halloween en la URL se fuerza para probar
+const TEMPORADA = { desde: '10-15', hasta: '11-01' }
+
+function enTemporada(fecha = new Date()) {
+  if (new URLSearchParams(window.location.search).has('halloween')) return true
+  const hoy = `${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`
+  return hoy >= TEMPORADA.desde && hoy <= TEMPORADA.hasta
+}
+
+const activo = enTemporada()
+const sinMovimiento = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+const vuelo = ref(0) // cambia la key para repetir la animación
+const volando = ref(false)
+const mensaje = ref(false)
+let temporizadores = []
+
+// Cada murciélago: altura de salida, tamaño, retraso, duración y dirección
+const murcielagos = [
+  { top: 18, tam: 84, retraso: 0, duracion: 4, alReves: false },
+  { top: 32, tam: 58, retraso: 0.4, duracion: 4.6, alReves: false },
+  { top: 10, tam: 46, retraso: 0.8, duracion: 5, alReves: true },
+  { top: 46, tam: 66, retraso: 1.2, duracion: 4.3, alReves: true },
+  { top: 26, tam: 38, retraso: 1.6, duracion: 5.2, alReves: false },
+]
+
+function soltarMurcielagos() {
+  if (sinMovimiento) return
+  vuelo.value++
+  volando.value = true
+  temporizadores.push(setTimeout(() => (volando.value = false), 7000))
+}
+
+function pulsarCalabaza() {
+  soltarMurcielagos()
+  mensaje.value = true
+  temporizadores.push(setTimeout(() => (mensaje.value = false), 2600))
+}
+
+onMounted(() => {
+  if (!activo) return
+  // Una vez por visita al entrar, para no cansar
+  let visto = false
+  try {
+    visto = sessionStorage.getItem('murcielagos') === '1'
+    sessionStorage.setItem('murcielagos', '1')
+  } catch {
+    // Sin sessionStorage: se muestran igualmente
+  }
+  if (!visto) temporizadores.push(setTimeout(soltarMurcielagos, 900))
+})
+
+onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
+</script>
+
+<template>
+  <template v-if="activo">
+    <div v-if="volando" :key="vuelo" class="murcielagos" aria-hidden="true">
+      <svg
+        v-for="(m, i) in murcielagos"
+        :key="i"
+        class="murcielago"
+        :class="{ 'murcielago--reves': m.alReves }"
+        :style="{
+          top: `${m.top}%`,
+          width: `${m.tam}px`,
+          animationDelay: `${m.retraso}s`,
+          animationDuration: `${m.duracion}s`,
+        }"
+        viewBox="0 0 100 60"
+      >
+        <!-- Silueta: orejas, cuerpo y alas en punta con el borde festoneado -->
+        <path
+          class="murcielago__alas"
+          d="M50 22 46 13 44 21C36 14 22 6 2 8c9 5 13 12 13 20-4-3-9-4-14-2 6 3 10 8 11 15 6-6 14-7 21-3 4 3 8 8 11 13 2 2 4 3 6 3s4-1 6-3c3-5 7-10 11-13 7-4 15-3 21 3 1-7 5-12 11-15-5-2-10-1-14 2 0-8 4-15 13-20-20-2-34 6-42 13l-2-8-4 9z"
+        />
+      </svg>
+    </div>
+
+    <div class="calabaza-caja">
+      <span v-if="mensaje" class="calabaza__mensaje" role="status">{{ t('halloween.feliz') }}</span>
+      <button class="calabaza" :aria-label="t('halloween.calabaza')" @click="pulsarCalabaza">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <path class="calabaza__tallo" d="M30 14c0-5 2-9 6-10l2 3c-3 1-4 4-4 7z" />
+          <ellipse class="calabaza__gajo" cx="20" cy="38" rx="14" ry="20" />
+          <ellipse class="calabaza__gajo" cx="44" cy="38" rx="14" ry="20" />
+          <ellipse class="calabaza__cuerpo" cx="32" cy="38" rx="15" ry="21" />
+          <g class="calabaza__cara">
+            <path d="M20 32l6-6 4 6z" />
+            <path d="M34 32l4-6 6 6z" />
+            <path d="M19 42c4 6 22 6 26 0l-4 1-2 3-3-3-4 3-3-3-3 3-3-3z" />
+          </g>
+        </svg>
+      </button>
+    </div>
+  </template>
+</template>
+
+<style scoped>
+/* Murciélagos: cruzan la pantalla una vez, por encima de todo pero sin tapar clics */
+.murcielagos {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.murcielago {
+  position: absolute;
+  left: 0;
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgb(212 168 67 / 0.55));
+  animation: cruzar linear forwards;
+}
+
+.murcielago--reves {
+  animation-name: cruzar-reves;
+}
+
+.murcielago__alas {
+  fill: #1c140c;
+  stroke: rgb(240 201 106 / 0.85);
+  stroke-width: 0.9;
+  transform-origin: 50px 26px;
+  animation: aletear 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes aletear {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0.55);
+  }
+}
+
+@keyframes cruzar {
+  0% {
+    opacity: 0;
+    transform: translate(-10vw, 0);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(50vw, -6vh);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(110vw, 4vh);
+  }
+}
+
+@keyframes cruzar-reves {
+  0% {
+    opacity: 0;
+    transform: translate(110vw, 0) scaleX(-1);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(50vw, 8vh) scaleX(-1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-10vw, -2vh) scaleX(-1);
+  }
+}
+
+/* Calabaza en la esquina inferior derecha (la caja no se mueve; la calabaza se balancea) */
+.calabaza-caja {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 40;
+}
+
+.calabaza {
+  display: block;
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.5));
+  transform-origin: 50% 100%;
+  animation: balanceo 4s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+
+.calabaza:hover {
+  animation-play-state: paused;
+  transform: scale(1.12);
+}
+
+.calabaza svg {
+  width: 100%;
+  height: 100%;
+}
+
+.calabaza__gajo {
+  fill: #c75f12;
+}
+
+.calabaza__cuerpo {
+  fill: #e07a1f;
+}
+
+.calabaza__tallo {
+  fill: #5d6b2c;
+}
+
+.calabaza__cara path {
+  fill: #ffd36b;
+  animation: vela 2.2s ease-in-out infinite;
+}
+
+.calabaza__mensaje {
+  position: absolute;
+  bottom: calc(100% + 0.6rem);
+  right: 0;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgb(212 168 67 / 0.35);
+  border-radius: 999px;
+  background: rgb(13 11 8 / 0.9);
+  color: var(--color-oro);
+  font: 600 0.8rem var(--fuente-texto);
+  white-space: nowrap;
+  animation: aparecer 0.3s ease-out;
+}
+
+@keyframes balanceo {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes vela {
+  0%,
+  100% {
+    fill: #ffd36b;
+    filter: drop-shadow(0 0 2px #ffb000);
+  }
+  45% {
+    fill: #ffb347;
+    filter: drop-shadow(0 0 5px #ff8a00);
+  }
+  60% {
+    fill: #ffe08a;
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (max-width: 520px) {
+  .calabaza-caja {
+    right: 0.9rem;
+    bottom: 0.9rem;
+  }
+
+  .calabaza {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calabaza,
+  .calabaza__cara path {
+    animation: none;
+  }
+}
+</style>
