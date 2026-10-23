@@ -18,6 +18,9 @@ const textos = {
       banner: 'Halloween en Los Bellvís: buen ambiente, como siempre',
       noche: 'Noche de Halloween',
       celebrar: 'Ven a celebrarlo',
+      ambiente: 'Ambiente',
+      activarSonido: 'Activar el sonido de Halloween',
+      silenciar: 'Silenciar el sonido de Halloween',
     },
     pie: {
       sub: 'Bar · Benissuera, Valencia',
@@ -116,6 +119,9 @@ const textos = {
       banner: 'Halloween at Los Bellvís: great atmosphere, as always',
       noche: 'Halloween night',
       celebrar: 'Come and celebrate',
+      ambiente: 'Sound',
+      activarSonido: 'Turn on the Halloween sound',
+      silenciar: 'Mute the Halloween sound',
     },
     pie: {
       sub: 'Bar · Benissuera, Valencia',
