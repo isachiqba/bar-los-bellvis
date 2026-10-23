@@ -14,10 +14,6 @@ const textos = {
       reservar: 'Reservar mesa',
       idioma: 'Idioma',
     },
-    halloween: {
-      calabaza: '¡Feliz Halloween! Pulsa para ver los murciélagos',
-      feliz: '¡Feliz Halloween! 🎃',
-    },
     pie: {
       sub: 'Bar · Benissuera, Valencia',
       contacto: 'Contacto',
@@ -111,7 +107,6 @@ const textos = {
       reservar: 'Book a table',
       idioma: 'Language',
     },
-    halloween: { calabaza: 'Happy Halloween! Tap to see the bats', feliz: 'Happy Halloween! 🎃' },
     pie: {
       sub: 'Bar · Benissuera, Valencia',
       contacto: 'Contact',
