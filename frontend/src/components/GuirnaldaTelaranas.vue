@@ -1,4 +1,6 @@
 <script setup>
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+
 // Guirnalda de Halloween para el borde superior de la portada: hilos combados que se repiten
 // a lo ancho, telarañas en las dos esquinas e hilos colgando con arañitas colgando.
 
@@ -58,12 +60,22 @@ const nudo = nudoMitad('izq') + nudoMitad('der')
 
 // Hilos que cuelgan: posición, largo y tamaño de la araña
 const colgantes = [
-  { x: 55, largo: 62, tam: 1 },
+  { x: 55, largo: 76, tam: 1 },
   { x: 108, largo: 34, tam: 0.7 },
   { x: 168, largo: 42, tam: 1.2 },
   { x: 222, largo: 46, tam: 0.8 },
-  { x: 276, largo: 74, tam: 1 },
+  { x: 276, largo: 82, tam: 1 },
 ].map((c) => ({ ...c, y: hiloBajo(c.x) }))
+
+// En pantallas con menú de móvil la frase de Halloween sube: los hilos se acortan para no taparla
+const consulta = window.matchMedia('(max-width: 1023px)')
+const estrecho = ref(consulta.matches)
+const alCambiar = (e) => (estrecho.value = e.matches)
+onMounted(() => consulta.addEventListener('change', alCambiar))
+onBeforeUnmount(() => consulta.removeEventListener('change', alCambiar))
+const colgantesVisibles = computed(() =>
+  colgantes.map((c) => (estrecho.value ? { ...c, largo: Math.round(c.largo * 0.45) } : c)),
+)
 
 // Arañita dibujada con el extremo del hilo en (0, 0): patas (4 por lado), cabeza y abdomen
 const patas = [
@@ -100,8 +112,12 @@ const vueltasEsquina = vueltas
   )
   .join('')
 const colgantesEsquina = [
-  { x: 40, y: 58, largo: 70, tam: 1.1 },
+  { x: 40, y: 58, largo: 54, tam: 1.1, largoLateral: true },
   { x: 78, y: 44, largo: 40, tam: 0.8 },
+  // Hilos largos que caen por el lateral
+  { x: 18, y: 104, largo: 190, tam: 1.15, largoLateral: true },
+  { x: 60, y: 92, largo: 130, tam: 0.95, largoLateral: true },
+  { x: 100, y: 55, largo: 235, tam: 0.85, largoLateral: true },
 ]
 
 // Arañitas posadas sobre la tela (sin hilo): posición, tamaño y giro.
@@ -129,7 +145,7 @@ const posadasEsquina = [
         <pattern id="tramo-telarana" :width="ANCHO" height="190" patternUnits="userSpaceOnUse">
           <path :d="curvasTela" />
           <path class="fino" :d="cruces + nudo" />
-          <g v-for="c in colgantes" :key="c.x" class="colgante">
+          <g v-for="c in colgantesVisibles" :key="c.x" class="colgante">
             <path class="fino" :d="`M${c.x} ${c.y.toFixed(1)}V${(c.y + c.largo).toFixed(1)}`" />
             <g class="aranita" :transform="transformAranita(c)">
               <path class="aranita__patas" :d="patasAranita" />
@@ -154,11 +170,11 @@ const posadasEsquina = [
       :key="lado"
       class="guirnalda__esquina"
       :class="`guirnalda__esquina--${lado}`"
-      viewBox="0 0 130 200"
+      viewBox="0 0 130 360"
     >
       <path :d="radiosEsquina" />
       <path class="fino" :d="vueltasEsquina" />
-      <g v-for="c in colgantesEsquina" :key="c.x">
+      <g v-for="c in colgantesEsquina" :key="c.x" :class="{ 'hilo-lateral': c.largoLateral }">
         <path class="fino" :d="`M${c.x} ${c.y}V${c.y + c.largo}`" />
         <g class="aranita" :transform="transformAranita(c)">
           <path class="aranita__patas" :d="patasAranita" />
@@ -167,7 +183,12 @@ const posadasEsquina = [
           <ellipse class="aranita__cuerpo" cy="7.6" rx="3" ry="3.6" />
         </g>
       </g>
-      <g v-for="(a, i) in posadasEsquina" :key="'e' + i" class="aranita" :transform="a.transform">
+      <g
+        v-for="(a, i) in posadasEsquina"
+        :key="'e' + i"
+        class="aranita hilo-lateral"
+        :transform="a.transform"
+      >
         <path class="aranita__patas" :d="patasAranita" />
         <path class="aranita__patas" :d="patasAranita" transform="scale(-1 1)" />
         <circle class="aranita__cuerpo" cy="3" r="2" />
@@ -181,26 +202,18 @@ const posadasEsquina = [
 .guirnalda {
   position: absolute;
   inset: 0 0 auto;
-  height: 200px;
+  height: 360px;
   pointer-events: none;
   /* Centro del nombre del bar en la cabecera (mismo margen que .contenedor) */
   --nombre-x: calc(max(1.5rem, 50% - var(--ancho-max) / 2 + 1.5rem) + 5.5rem);
   /* Se desvanece hacia abajo y se aclara detrás del nombre para que se lea bien */
   -webkit-mask-image:
-    linear-gradient(to bottom, #000 70%, transparent),
-    radial-gradient(
-      9rem 3.2rem at var(--nombre-x) 2.2rem,
-      rgb(0 0 0 / 0.12) 55%,
-      #000 100%
-    );
+    linear-gradient(to bottom, #000 85%, transparent),
+    radial-gradient(9rem 3.2rem at var(--nombre-x) 2.2rem, rgb(0 0 0 / 0.12) 55%, #000 100%);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to bottom, #000 70%, transparent),
-    radial-gradient(
-      9rem 3.2rem at var(--nombre-x) 2.2rem,
-      rgb(0 0 0 / 0.12) 55%,
-      #000 100%
-    );
+    linear-gradient(to bottom, #000 85%, transparent),
+    radial-gradient(9rem 3.2rem at var(--nombre-x) 2.2rem, rgb(0 0 0 / 0.12) 55%, #000 100%);
   mask-composite: intersect;
 }
 
@@ -241,7 +254,14 @@ svg {
 .guirnalda__esquina {
   top: 0;
   width: 130px;
-  height: 200px;
+  height: 360px;
+}
+
+/* En pantallas estrechas la esquina queda pegada al texto: ahí solo se ve la telaraña */
+@media (max-width: 1439px) {
+  .hilo-lateral {
+    display: none;
+  }
 }
 
 .guirnalda__esquina--izquierda {
@@ -266,7 +286,7 @@ svg {
 
   .guirnalda__esquina {
     width: 90px;
-    height: 140px;
+    height: 249px;
   }
 }
 </style>
