@@ -129,7 +129,47 @@ function crearAudio() {
   programar(fantasma, 16, 28)
 }
 
+// iPhone: con el interruptor de silencio activado, Web Audio no suena aunque el volumen esté alto.
+// Al pulsar el botón se marca como reproducción pedida por el usuario (igual que un vídeo):
+// en Safari moderno con audioSession y, en los antiguos, reproduciendo un audio en silencio en bucle.
+let audioSilencio = null
+
+function silencioWav() {
+  const muestras = 2205 // 0,05 s a 44,1 kHz, todo ceros
+  const datos = new DataView(new ArrayBuffer(44 + muestras * 2))
+  const texto = (pos, t) => [...t].forEach((c, i) => datos.setUint8(pos + i, c.charCodeAt(0)))
+  texto(0, 'RIFF')
+  datos.setUint32(4, 36 + muestras * 2, true)
+  texto(8, 'WAVEfmt ')
+  datos.setUint32(16, 16, true)
+  datos.setUint16(20, 1, true)
+  datos.setUint16(22, 1, true)
+  datos.setUint32(24, 44100, true)
+  datos.setUint32(28, 88200, true)
+  datos.setUint16(32, 2, true)
+  datos.setUint16(34, 16, true)
+  texto(36, 'data')
+  datos.setUint32(40, muestras * 2, true)
+  return URL.createObjectURL(new Blob([datos], { type: 'audio/wav' }))
+}
+
+function desbloquearIOS() {
+  try {
+    if (navigator.audioSession) navigator.audioSession.type = 'playback'
+  } catch {
+    // Navegador sin audioSession: queda el audio en silencio
+  }
+  if (!audioSilencio) {
+    audioSilencio = new Audio(silencioWav())
+    audioSilencio.loop = true
+    audioSilencio.setAttribute('playsinline', '')
+  }
+  audioSilencio.play().catch(() => {})
+}
+
 async function encender() {
+  // Todo lo que necesita el toque del usuario va antes del primer await
+  desbloquearIOS()
   if (!ctx) crearAudio()
   await ctx.resume()
   // Entrada y salida suaves para que no dé un golpe de volumen
@@ -145,6 +185,7 @@ async function encender() {
 
 function apagar() {
   activo.value = false
+  audioSilencio?.pause()
   if (!ctx) return
   salida.gain.cancelScheduledValues(ctx.currentTime)
   salida.gain.setTargetAtTime(0, ctx.currentTime, 0.2)
