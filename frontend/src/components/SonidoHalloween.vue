@@ -1,6 +1,6 @@
 <script setup>
-// Ambiente sonoro de Halloween con Web Audio: murciélagos generados en el navegador y la grabación
-// de un fantasma que suena de vez en cuando.
+// Ambiente sonoro de Halloween con Web Audio: murciélagos generados en el navegador y la
+// grabación de un fantasma.
 // Empieza siempre en silencio: suena solo si el visitante lo activa con el botón.
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { esHalloween } from '../halloween'
@@ -18,7 +18,7 @@ const azar = (min, max) => min + Math.random() * (max - min)
 
 // Fantasma: un "uuuuuu" de 5 s grabado (public/halloween/fantasma.wav). El archivo se descarga
 // solo cuando el visitante enciende el sonido, para no hacer más lenta la web
-const NIVEL_FANTASMA = 0.6 // la grabación es mucho más fuerte que los murciélagos
+const NIVEL_FANTASMA = 0.95 // la grabación es mucho más fuerte que los murciélagos
 let grabacionFantasma = null
 
 async function cargarFantasma() {
@@ -107,7 +107,7 @@ function crearAudio() {
   cargarFantasma()
   programar(murcielagos, 3, 7)
   programar(murcielagosPareja, 9, 16)
-  programar(fantasma, 7, 12)
+  programar(fantasma, 5.5, 8)
 }
 
 // iPhone: con el interruptor de silencio activado, Web Audio no suena aunque el volumen esté alto.
