@@ -23,59 +23,64 @@ function ruido(segundos) {
   return buffer
 }
 
-// Puerta que chirría: la bisagra roza a tirones (fricción a golpes muy seguidos) y la madera
-// resuena. Los golpes se aceleran y frenan durante el giro: "iiiieeeec"
+// Puerta que chirría: la bisagra roza a tirones cientos de veces por segundo, lo que da un
+// chirrido agudo y afinado ("iiiieeec") que sube y baja de tono mientras gira la puerta.
+// La fricción no es regular: hay pequeños saltos y temblores que le dan el carácter de bisagra vieja.
 function puerta() {
   const ahora = ctx.currentTime
-  const dura = azar(1.3, 2.2)
+  const dura = azar(1.2, 1.9)
   const sr = ctx.sampleRate
   const buffer = ctx.createBuffer(1, Math.ceil(sr * dura), sr)
   const datos = buffer.getChannelData(0)
-  const base = azar(16, 24)
-  const subida = azar(1.2, 2)
+  const base = azar(380, 520) // tono de partida del chirrido (Hz)
+  const subida = azar(0.6, 1.1) // cuánto sube de tono a mitad del giro
+  const temblor = azar(22, 34) // tirones de la fricción por segundo
   let fase = 0
+  let tono = 1
   for (let i = 0; i < datos.length; i++) {
+    const t = i / sr
     const u = i / datos.length
-    // Ritmo de los tirones: sube en mitad del giro y baja al final, con algo de irregularidad
-    const ritmo =
-      base *
-      (1 + subida * Math.sin(Math.PI * Math.min(1, u * 1.15))) *
-      (1 + 0.08 * Math.sin(i / 900))
+    // De vez en cuando la bisagra "salta" y el tono cambia un poco de golpe
+    if (Math.random() < 0.0004) tono = azar(0.85, 1.15)
+    const ritmo = base * tono * (1 + subida * Math.sin(Math.PI * u)) * (1 + 0.03 * Math.sin(t * 37))
     fase += ritmo / sr
     if (fase >= 1) {
       fase -= 1
-      const fuerza = azar(0.6, 1)
-      // Cada tirón es un chasquido corto de ruido que se apaga enseguida
-      for (let k = 0; k < 60 && i + k < datos.length; k++) {
-        datos[i + k] += fuerza * (Math.random() * 2 - 1) * Math.exp(-k / 9)
+      // Intensidad que tiembla con los tirones de la fricción
+      const fuerza = (0.35 + 0.65 * Math.abs(Math.sin(Math.PI * temblor * t))) * azar(0.8, 1)
+      for (let k = 0; k < 10 && i + k < datos.length; k++) {
+        datos[i + k] += fuerza * Math.exp(-k / 2.5) * (k % 2 ? -1 : 1)
       }
     }
   }
   const fuente = ctx.createBufferSource()
   fuente.buffer = buffer
-  // Resonancias de la madera y del metal de la bisagra
-  const mezcla = ctx.createGain()
-  for (const [frecuencia, q, nivel] of [
-    [azar(480, 620), 14, 1],
-    [azar(1050, 1300), 16, 0.8],
-    [azar(2200, 2700), 12, 0.45],
-  ]) {
-    const filtro = ctx.createBiquadFilter()
-    filtro.type = 'bandpass'
-    filtro.frequency.value = frecuencia
-    filtro.Q.value = q
-    const g = ctx.createGain()
-    g.gain.value = nivel
-    fuente.connect(filtro).connect(g).connect(mezcla)
-  }
+  // Sin graves (eran los que daban el sonido de eructo) y con el brillo del metal
+  const sinGraves = ctx.createBiquadFilter()
+  sinGraves.type = 'highpass'
+  sinGraves.frequency.value = 600
+  const brillo = ctx.createBiquadFilter()
+  brillo.type = 'peaking'
+  brillo.frequency.value = azar(1600, 2200)
+  brillo.Q.value = 2
+  brillo.gain.value = 8
+  const suave = ctx.createBiquadFilter()
+  suave.type = 'lowpass'
+  suave.frequency.value = 5000
   const env = ctx.createGain()
   env.gain.setValueAtTime(0, ahora)
-  env.gain.linearRampToValueAtTime(40, ahora + 0.12)
-  env.gain.setValueAtTime(40, ahora + dura - 0.35)
+  env.gain.linearRampToValueAtTime(3.2, ahora + 0.08)
+  env.gain.setValueAtTime(3.2, ahora + dura - 0.25)
   env.gain.linearRampToValueAtTime(0, ahora + dura)
   const panorama = ctx.createStereoPanner()
   panorama.pan.value = azar(-0.5, 0.5)
-  mezcla.connect(env).connect(panorama).connect(salida)
+  fuente
+    .connect(sinGraves)
+    .connect(brillo)
+    .connect(suave)
+    .connect(env)
+    .connect(panorama)
+    .connect(salida)
   fuente.start(ahora)
 }
 
@@ -196,7 +201,9 @@ function alternar() {
 
 // Si el visitante lo dejó encendido, vuelve a sonar al primer toque en la página
 // (los navegadores no permiten que suene antes de que el visitante interactúe)
-function alPrimerToque() {
+function alPrimerToque(evento) {
+  // Si el primer toque es en el propio botón, ya lo gestiona alternar()
+  if (evento.target.closest?.('.sonido')) return
   quitarEscuchaToque()
   if (!activo.value) encender()
 }
