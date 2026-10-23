@@ -25,7 +25,7 @@ function ruido(segundos) {
 
 // Fantasma: un "uuuuuu" de 5 s grabado (public/halloween/fantasma.wav). El archivo se descarga
 // solo cuando el visitante enciende el sonido, para no hacer más lenta la web
-const NIVEL_FANTASMA = 0.4 // la grabación es mucho más fuerte que los murciélagos
+const NIVEL_FANTASMA = 0.6 // la grabación es mucho más fuerte que los murciélagos
 let grabacionFantasma = null
 
 async function cargarFantasma() {
