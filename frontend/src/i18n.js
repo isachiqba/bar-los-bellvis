@@ -15,8 +15,6 @@ const textos = {
       idioma: 'Idioma',
     },
     halloween: {
-      calabaza: '¡Feliz Halloween! Pulsa para ver los murciélagos',
-      feliz: '¡Feliz Halloween! 🎃',
       banner: 'Halloween en Los Bellvís: buen ambiente, como siempre',
       noche: 'Noche de Halloween',
       celebrar: 'Ven a celebrarlo',
@@ -115,8 +113,6 @@ const textos = {
       idioma: 'Language',
     },
     halloween: {
-      calabaza: 'Happy Halloween! Tap to see the bats',
-      feliz: 'Happy Halloween! 🎃',
       banner: 'Halloween at Los Bellvís: great atmosphere, as always',
       noche: 'Halloween night',
       celebrar: 'Come and celebrate',
