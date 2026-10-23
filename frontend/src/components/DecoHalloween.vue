@@ -20,18 +20,18 @@ let temporizadores = []
 
 // Cada murciélago: altura de salida, tamaño, retraso, duración y dirección
 const murcielagos = [
-  { top: 18, tam: 84, retraso: 0, duracion: 4, alReves: false },
-  { top: 32, tam: 58, retraso: 0.4, duracion: 4.6, alReves: false },
-  { top: 10, tam: 46, retraso: 0.8, duracion: 5, alReves: true },
-  { top: 46, tam: 66, retraso: 1.2, duracion: 4.3, alReves: true },
-  { top: 26, tam: 38, retraso: 1.6, duracion: 5.2, alReves: false },
+  { top: 18, tam: 84, retraso: 0, duracion: 9, alReves: false },
+  { top: 34, tam: 58, retraso: 1, duracion: 10, alReves: false },
+  { top: 10, tam: 46, retraso: 2, duracion: 10.5, alReves: true },
+  { top: 48, tam: 66, retraso: 2.8, duracion: 9.5, alReves: true },
+  { top: 26, tam: 38, retraso: 3.6, duracion: 11, alReves: false },
 ]
 
 function soltarMurcielagos() {
   if (sinMovimiento) return
   vuelo.value++
   volando.value = true
-  temporizadores.push(setTimeout(() => (volando.value = false), 7000))
+  temporizadores.push(setTimeout(() => (volando.value = false), 15500))
 }
 
 function pulsarCalabaza() {
@@ -82,6 +82,7 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
 
     <div class="calabaza-caja">
       <span v-if="mensaje" class="calabaza__mensaje" role="status">{{ t('halloween.feliz') }}</span>
+      <span v-if="!mensaje" class="calabaza__etiqueta" aria-hidden="true">Halloween</span>
       <button class="calabaza" :aria-label="t('halloween.calabaza')" @click="pulsarCalabaza">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <path class="calabaza__tallo" d="M30 14c0-5 2-9 6-10l2 3c-3 1-4 4-4 7z" />
@@ -144,18 +145,24 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
     opacity: 0;
     transform: translate(-10vw, 0);
   }
-  10% {
+  8% {
     opacity: 1;
   }
-  50% {
-    transform: translate(50vw, -6vh);
+  25% {
+    transform: translate(20vw, -7vh);
   }
-  90% {
+  50% {
+    transform: translate(50vw, 3vh);
+  }
+  75% {
+    transform: translate(80vw, -5vh);
+  }
+  92% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translate(110vw, 4vh);
+    transform: translate(110vw, 2vh);
   }
 }
 
@@ -164,13 +171,19 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
     opacity: 0;
     transform: translate(110vw, 0) scaleX(-1);
   }
-  10% {
+  8% {
     opacity: 1;
   }
-  50% {
-    transform: translate(50vw, 8vh) scaleX(-1);
+  25% {
+    transform: translate(80vw, 6vh) scaleX(-1);
   }
-  90% {
+  50% {
+    transform: translate(50vw, -4vh) scaleX(-1);
+  }
+  75% {
+    transform: translate(20vw, 5vh) scaleX(-1);
+  }
+  92% {
     opacity: 1;
   }
   100% {
@@ -181,6 +194,9 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
 
 /* Calabaza en la esquina inferior derecha (la caja no se mueve; la calabaza se balancea) */
 .calabaza-caja {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   position: fixed;
   right: 1.25rem;
   bottom: 1.25rem;
@@ -189,8 +205,9 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
 
 .calabaza {
   display: block;
-  width: 3.25rem;
-  height: 3.25rem;
+  position: relative;
+  width: 4.75rem;
+  height: 4.75rem;
   padding: 0;
   border: 0;
   background: none;
@@ -204,6 +221,39 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
 .calabaza:hover {
   animation-play-state: paused;
   transform: scale(1.12);
+}
+
+/* Halo naranja que late detrás de la calabaza */
+.calabaza::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 140 0 / 0.55), transparent 70%);
+  z-index: -1;
+  animation: halo 2.4s ease-in-out infinite;
+}
+
+.calabaza__etiqueta {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgb(224 122 31 / 0.5);
+  border-radius: 999px;
+  background: rgb(13 11 8 / 0.85);
+  color: #f0a052;
+  font: 600 0.75rem var(--fuente-texto);
+  letter-spacing: 0.05em;
+}
+
+@keyframes halo {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
 }
 
 .calabaza svg {
@@ -281,13 +331,14 @@ onBeforeUnmount(() => temporizadores.forEach(clearTimeout))
   }
 
   .calabaza {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3.75rem;
+    height: 3.75rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .calabaza,
+  .calabaza::before,
   .calabaza__cara path {
     animation: none;
   }
