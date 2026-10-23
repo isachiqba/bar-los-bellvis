@@ -5,7 +5,7 @@ import { esHalloween } from '../halloween'
 const activo = esHalloween
 const sinMovimiento = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 const volando = ref(false)
-let temporizadores = []
+let temporizador = null
 
 // Cada murciélago: altura de salida, tamaño, retraso, duración y dirección
 const murcielagos = [
@@ -16,27 +16,14 @@ const murcielagos = [
   { top: 26, tam: 74, retraso: 3.6, duracion: 11, alReves: false },
 ]
 
-// Salen al segundo de entrar y vuelven a pasar mientras se está en la página
-const DURACION_VUELO = 15500 // lo que tarda el último murciélago en cruzar
-const CADA = 40000 // un vuelo cada 40 s (unos 25 s de pausa entre vuelos)
-let intervalo = null
-
-function vuelo() {
-  if (document.hidden) return // con la pestaña en segundo plano no se anima
-  volando.value = true
-  temporizadores.push(setTimeout(() => (volando.value = false), DURACION_VUELO))
-}
-
+// Empiezan al segundo de entrar y, como la animación se repite sin fin, no paran nunca.
+// Con la pestaña en segundo plano el navegador detiene la animación por su cuenta.
 onMounted(() => {
   if (!activo || sinMovimiento) return
-  temporizadores.push(setTimeout(vuelo, 900))
-  intervalo = setInterval(vuelo, CADA)
+  temporizador = setTimeout(() => (volando.value = true), 900)
 })
 
-onBeforeUnmount(() => {
-  temporizadores.forEach(clearTimeout)
-  clearInterval(intervalo)
-})
+onBeforeUnmount(() => clearTimeout(temporizador))
 </script>
 
 <template>
@@ -59,7 +46,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Murciélagos: cruzan la pantalla una vez, por encima de todo pero sin tapar clics */
+/* Murciélagos: cruzan la pantalla sin parar, por encima de todo pero sin tapar clics */
 .murcielagos {
   position: fixed;
   inset: 0;
@@ -75,7 +62,7 @@ onBeforeUnmount(() => {
   opacity: 0;
   filter: drop-shadow(0 0 10px rgb(255 170 60 / 0.35));
   animation:
-    cruzar linear forwards,
+    cruzar linear infinite,
     aletear 0.6s ease-in-out infinite alternate;
 }
 
