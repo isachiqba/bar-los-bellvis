@@ -7,7 +7,7 @@ const sinMovimiento = window.matchMedia?.('(prefers-reduced-motion: reduce)').ma
 const volando = ref(false)
 let temporizador = null
 
-// Cada murciélago: altura de salida, tamaño, retraso, duración y dirección
+// Cada murciélago: altura de salida, tamaño, retraso, duración (en una pantalla de móvil) y dirección
 const murcielagos = [
   { top: 18, tam: 160, retraso: 0, duracion: 9, alReves: false },
   { top: 34, tam: 112, retraso: 1, duracion: 10, alReves: false },
@@ -16,14 +16,25 @@ const murcielagos = [
   { top: 26, tam: 74, retraso: 3.6, duracion: 11, alReves: false },
 ]
 
+// La animación cruza toda la pantalla: en pantallas anchas se alarga la duración para que
+// vuelen igual de despacio que en el móvil (misma velocidad, no mismo tiempo)
+const ANCHO_MOVIL = 400
+const escala = ref(1)
+const ajustarEscala = () => (escala.value = Math.max(1, window.innerWidth / ANCHO_MOVIL))
+
 // Empiezan al segundo de entrar y, como la animación se repite sin fin, no paran nunca.
 // Con la pestaña en segundo plano el navegador detiene la animación por su cuenta.
 onMounted(() => {
   if (!activo || sinMovimiento) return
+  ajustarEscala()
+  window.addEventListener('resize', ajustarEscala)
   temporizador = setTimeout(() => (volando.value = true), 900)
 })
 
-onBeforeUnmount(() => clearTimeout(temporizador))
+onBeforeUnmount(() => {
+  clearTimeout(temporizador)
+  window.removeEventListener('resize', ajustarEscala)
+})
 </script>
 
 <template>
@@ -38,8 +49,8 @@ onBeforeUnmount(() => clearTimeout(temporizador))
       :style="{
         top: `${m.top}%`,
         width: `${m.tam}px`,
-        animationDelay: `${m.retraso}s`,
-        animationDuration: `${m.duracion}s`,
+        animationDelay: `${m.retraso * escala}s`,
+        animationDuration: `${m.duracion * escala}s, 0.6s`,
       }"
     />
   </div>
